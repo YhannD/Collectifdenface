@@ -37,6 +37,12 @@ class RegistrationFormType extends AbstractType
                 ],
                 'label' => 'Prénom'
             ])
+            ->add('alias', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+                'label' => 'Nom d\'artiste'
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [

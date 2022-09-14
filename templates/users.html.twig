@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+        {% endblock %}
+        <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" defer></script>
+        {% block javascripts %}
+            <script src="{{ asset('assets/js/scripts.js') }}" defer></script>
+        {% endblock %}
+    </head>
+    <body>
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">Enable body scrolling</button>
+
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Offcanvas with body scrolling</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+                <a class="nav-link active" aria-current="page" href="#">Mon profil</a>
+                <a class="nav-link active" aria-current="page" href="#">Mes posts</a>
+        </div>
+    </div>
+
+    {% include "_partials/_nav.html.twig" %}
+    {% block body %}{% endblock %}
+    {% include "_partials/_footer.html.twig" %}
+    </body>
+</html>

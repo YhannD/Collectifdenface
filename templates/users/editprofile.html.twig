@@ -1,0 +1,23 @@
+{% extends 'users.html.twig' %}
+
+{% block title %}Modification du profil de {{ app.user.firstname }} {{ app.user.lastname }}{% endblock %}
+
+{% block body %}
+    <div class=" container">
+        <div class="col">
+            <h1>Modification du profil de {{ app.user.alias }}</h1>
+            {{ form(form) }}
+            <div class="grid">
+                <div class="card">
+                    <img src="{{ asset('assets/uploads/medias/' ~ app.user.image) }}" alt="Image" width="150">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ app.user.alias }}</h5>
+                        <p class="text text-muted">{{ app.user.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
