@@ -1,0 +1,11 @@
+<div class="col-3">
+<div class="card h-100">
+    <img src="{{ asset('assets/uploads/exhibitions/' ~ exhibition.exhibitionsImages[0].name) }}" alt="" class="card-img-top">
+    <div class="card-body">
+        <h5 class="card-title">{{ exhibition.name }}</h5>
+        <p class="text text-muted">{{ exhibition.description|length > 100 ? exhibition.description|slice(0, 100) ~ '...' : exhibition.description }}</p>
+        <a href="{{ path('app_exhibitions_details',{"name": exhibition.name}) }}"
+           class="btn btn-primary">Voir l'exposition</a>
+    </div>
+</div>
+</div>

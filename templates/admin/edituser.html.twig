@@ -5,5 +5,6 @@
 {% block body %}
     <h1>Modifier un utilisateur</h1>
     {{ form(userForm) }}
+    {{ include('admin/_delete_form.html.twig') }}
 {% endblock %}
 

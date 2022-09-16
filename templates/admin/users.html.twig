@@ -9,7 +9,7 @@
         <th>ID</th>
         <th>Email</th>
         <th>Rôles</th>
-        <th>Articles</th>
+        <th>Identité</th>
         <th>Actions</th>
         </thead>
         <tbody>
@@ -30,8 +30,9 @@
                         {% endif %}
                     {% endfor %}
                 </td>
-                <td></td>
+                <td>{{ user.lastname }} {{ user.firstname }} </td>
                 <td><a href="{{ path('app_admin_modifier_utilisateurs', {'id': user.id}) }}">Modifier</a></td>
+
             </tr>
 
         {% else %}

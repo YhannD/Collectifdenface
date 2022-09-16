@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ medias.name }}{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <section class="row">
+            <div class="col-12">
+                <h1>{{ medias.name }}</h1>
+            </div>
+            {% if medias.mediasSections.id == '3' %}
+
+                {% include 'medias/_video.html.twig' %}
+
+            {% elseif medias.mediasSections.id == '2'%}
+
+                {% include 'medias/_music.html.twig' %}
+
+            {% else %}
+                {% if medias.mediasImages|length < 2 %}
+{#                    <div class="container">#}
+{#                        <div class="grid">#}
+                            <div class="col-6">
+                                <img src="{{ asset('assets/uploads/medias/' ~ medias.mediasImages[0].name) }}" alt="Image" width="500">
+                            </div>
+{#                        </div>#}
+{#                    </div>#}
+                    {% else %}
+                {% include 'medias/_carousel.html.twig' %}
+
+            {% endif %}
+            {% endif %}
+
+            <div class="col-6">
+                <p>{{ medias.description }}</p>
+            </div>
+        </section>
+    </main>
+{% endblock %}

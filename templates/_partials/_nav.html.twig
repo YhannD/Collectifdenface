@@ -8,29 +8,29 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{#{{ path('app_exhibitions_index') }}#}">Les expositions</a>
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_exhibitions') }}">Les expositions</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{#{{ path('app_editions_index') }}#}">Les éditions</a>
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_artists') }}">Les artistes</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                        aria-expanded="false">
-                        Les salons d'artistes
+                        Les productions
                     </a>
                     <ul class="dropdown-menu">
 {#                        <li><a class="dropdown-item" href="#}{#{{ path('app_main') }}#}{#">Les salons des artists</a></li>#}
 {#                        <li>#}
 {#                            <hr class="dropdown-divider">#}
 {#                        </li>#}
-                        <li><a class="dropdown-item" href="{#{{ path('app_artistes_index') }}#}">Les artistes</a></li>
-                        <li><a class="dropdown-item" href="{#{{ path('app_medias_images') }}#}">Les réalisations</a></li>
-                        <li><a class="dropdown-item" href="{#{{ path('app_medias_musics') }}#}">Les musiques</a></li>
-                        <li><a class="dropdown-item" href="{#{{ path('app_medias_videos') }}#}">Les vidéos</a></li>
+                        <li><a class="dropdown-item" href="{{ path('app_medias_images') }}">Les réalisations</a></li>
+                        <li><a class="dropdown-item" href="{{ path('app_medias_musics') }}">Les musiques</a></li>
+                        <li><a class="dropdown-item" href="{{ path('app_medias_videos') }}">Les vidéos</a></li>
+                        <li><a class="dropdown-item" href="{{ path('app_medias_editions') }}">Les éditions</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="{#{{ path('app_medias_categories') }}#}">Les categories</a></li>
+                        <li><a class="dropdown-item" href="{{ path('app_medias_categories') }}">Les categories</a></li>
                     </ul>
                 </li>
             </ul>
@@ -46,11 +46,20 @@
                         <a class="nav-link " href="{{ path('app_categories_index') }}">Catégories</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link " href="{{ path('app_exhibitions_index') }}">Expositions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="{{ path('app_medias_index_admin') }}">Medias</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link " href="{{ path('app_logout') }}">Me déconnecter</a>
                     </li>
                 {% elseif is_granted('ROLE_USER') %}
                     <li class="nav-item">
                         <a class="nav-link " href="{{ path('app_users') }}">Mon profil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="{{ path('app_medias_index') }}">Medias</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="{{ path('app_logout') }}">Me déconnecter</a>
@@ -66,9 +75,9 @@
                     <li class="nav-item">
                         <a class="nav-link " href="{{ path('app_login') }}">Me connecter</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="{#{{ path('app_medias_crud_index') }}#}">CRUD</a>
-                    </li>
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link " href="#}{#{{ path('app_medias_crud_index') }}#}{#">CRUD</a>#}
+{#                    </li>#}
                 {% endif %}
             </ul>
         </div>

@@ -1,0 +1,16 @@
+<div class="col-4 mb-3">
+    <div class="card h-100">
+        {% if media.mediasImages[0].name is defined %}
+            <img src="{{ asset('assets/uploads/medias/' ~ media.mediasImages[0].name) }}" alt="" class="card-img-top">
+        {% else %}
+            <img src="{{ asset('assets/uploads/front/default.png') }}" alt="Image" width="400">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{ media.name }}</h5>
+            <p class="text text-muted">{{ media.description|length > 100 ? media.description|slice(0, 100) ~ '...' : media.description }}</p>
+            <a href="{{path('app_medias_details', {id:media.id}) }}"
+               class="btn btn-primary">Voir l'oeuvre</a>
+        </div>
+    </div>
+</div>
+

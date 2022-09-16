@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Medias index{% endblock %}
+
+{% block body %}
+    <h1>Medias index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Auteur</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Catégories</th>
+                <th>Section</th>
+                <th>Couverture</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for media in medias %}
+            <tr>
+                <td>{{ media.user.alias }}</td>
+                <td>{{ media.name }}</td>
+                <td>{{ media.description }}</td>
+                <td>{% for media in media.categories %}
+                    {{ media.name }}
+                    {%  endfor %}
+                </td>
+                <td>{{ media.mediasSections.name }}</td>
+                <td>{% if media.mediasImages[0].name is defined %}
+                    <img src="{{ asset('assets/uploads/medias/' ~ media.mediasImages[0].name) }}" alt="Image" width="50"></td>
+                {% else %}
+                    <img src="{{ asset('assets/uploads/front/default.png') }}" alt="Image" width="50">
+                    {% endif %}
+                <td>
+                    <a href="{{ path('app_medias_show_admin', {'id': media.id}) }}">show</a>
+                    <a href="{{ path('app_medias_edit_admin', {'id': media.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_medias_new_admin') }}">Create new</a>
+{% endblock %}

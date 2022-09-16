@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -46,6 +48,19 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Medias::class, orphanRemoval: true)]
+    private Collection $medias;
+
+    public function __construct()
+    {
+        $this->medias = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->alias;
+    }
 
     public function getId(): ?int
     {
@@ -185,6 +200,36 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setImage(?string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Medias>
+     */
+    public function getMedias(): Collection
+    {
+        return $this->medias;
+    }
+
+    public function addMedia(Medias $media): self
+    {
+        if (!$this->medias->contains($media)) {
+            $this->medias->add($media);
+            $media->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedia(Medias $media): self
+    {
+        if ($this->medias->removeElement($media)) {
+            // set the owning side to null (unless already changed)
+            if ($media->getUser() === $this) {
+                $media->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,15 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+{% if app.request.attributes.get('_route')=='app_medias_edit_admin' %}
+
+    <h2>Images</h2>
+    {% for mediasImage in media.mediasImages %}
+        <div>
+            <img src="{{ asset('assets/uploads/medias/' ~ mediasImage.name) }}" alt="Image" width="150">
+            <a href="{{ path('app_medias_delete_image_admin' , {'id': mediasImage.id}) }}" data-delete
+               data-token="{{ csrf_token('delete' ~ mediasImage.id) }}">Supprimer</a>
+        </div>
+    {% endfor %}
+{% endif %}
+<button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

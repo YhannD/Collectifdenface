@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ exhibitions.name }}{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <section class="row">
+            <div class="col-12">
+                <h1>{{ exhibitions.name }}</h1>
+            </div>
+
+            {% include 'exhibitions/_carousel.html.twig' %}
+
+            <div class="col-6">
+                <p>{{ exhibitions.description }}</p>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+
