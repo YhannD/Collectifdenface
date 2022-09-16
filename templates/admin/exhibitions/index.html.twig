@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Exhibitions index{% endblock %}
+
+{% block body %}
+    <h1>Exhibitions index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Couverture</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for exhibition in exhibitions %}
+            <tr>
+                <td>{{ exhibition.id }}</td>
+                <td>{{ exhibition.name }}</td>
+                <td>{{ exhibition.description }}</td>
+                <td><img src="{{ asset('assets/uploads/exhibitions/' ~ exhibition.exhibitionsImages[0].name) }}" alt="Image" width="50"></td>
+                <td>
+                    <a href="{{ path('app_exhibitions_show', {'id': exhibition.id}) }}">show</a>
+                    <a href="{{ path('app_exhibitions_edit', {'id': exhibition.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_exhibitions_new') }}">Create new</a>
+{% endblock %}

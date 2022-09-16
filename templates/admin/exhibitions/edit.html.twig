@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Exhibitions{% endblock %}
+
+{% block body %}
+    <h1>Edit Exhibitions</h1>
+
+    {{ include('admin/exhibitions/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_exhibitions_index') }}">back to list</a>
+
+    {{ include('admin/exhibitions/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/images.js') }}"></script>
+{% endblock %}

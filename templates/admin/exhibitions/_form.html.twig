@@ -1,0 +1,16 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+
+{% if app.request.attributes.get('_route')=='app_exhibitions_edit' %}
+
+    <h2>Images</h2>
+    {% for exhibitionsImage in exhibition.exhibitionsImages %}
+        <div>
+            <img src="{{ asset('assets/uploads/exhibitions/' ~ exhibitionsImage.name) }}" alt="Image" width="150">
+            <a href="{{ path('app_exhibitions_delete_image' , {'id': exhibitionsImage.id}) }}" data-delete
+               data-token="{{ csrf_token('delete' ~ exhibitionsImage.id) }}">Supprimer</a>
+        </div>
+    {% endfor %}
+{% endif %}
+<button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

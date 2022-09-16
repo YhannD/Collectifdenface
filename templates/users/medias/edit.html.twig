@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Medias{% endblock %}
+
+{% block body %}
+    <h1>Edit Medias</h1>
+
+    {{ include('users/medias/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_medias_index') }}">back to list</a>
+
+    {{ include('users/medias/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/images.js') }}"></script>
+{% endblock %}
