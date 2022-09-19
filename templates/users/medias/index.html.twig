@@ -23,7 +23,10 @@
                 <td>{{ media.user.alias }}</td>
                 <td>{{ media.name }}</td>
                 <td>{{ media.description }}</td>
-                <td>{{ media.categories }}</td>
+                <td>{% for media in media.categories %}
+                        #{{ media.name }}
+                    {%  endfor %}
+                </td>
                 <td>{{ media.mediasSections.name }}</td>
                 <td>{% if media.mediasImages[0].name is defined %}
                     <img src="{{ asset('assets/uploads/medias/' ~ media.mediasImages[0].name) }}" alt="Image" width="50"></td>

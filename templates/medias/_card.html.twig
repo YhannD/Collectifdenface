@@ -2,7 +2,9 @@
     <div class="card h-100">
         {% if media.mediasImages[0].name is defined %}
             <img src="{{ asset('assets/uploads/medias/' ~ media.mediasImages[0].name) }}" alt="" class="card-img-top">
-        {% else %}
+        {% elseif media.mediasVideos[0].name is defined %}
+            <img src="{{ asset('assets/uploads/front/default.png') }}" alt="Image" width="400">
+        {% elseif media.mediasMusics[0].name is defined %}
             <img src="{{ asset('assets/uploads/front/default.png') }}" alt="Image" width="400">
         {% endif %}
         <div class="card-body">
