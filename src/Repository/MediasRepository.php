@@ -45,137 +45,59 @@ class MediasRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * Récupère tous les medias en lien avec une recherche
-     * @param SearchData $search
-     * @return PaginationInterface
-     */
-    public function findSearch(SearchData $search): PaginationInterface
-    {
-        $query = $this
-            ->createQueryBuilder('m')
-            ->select('c', 'm')
-            ->join('m.categories', 'c');
+//    /**
+//     * Récupère tous les medias en lien avec une recherche
+//     * @param SearchData $search
+//     * @return PaginationInterface
+//     */
+//    public function findImagesType(SearchData $search): PaginationInterface
+//    {
+//        $query = $this
+//            ->createQueryBuilder('m')
+//            ->select('c', 'm')
+//            ->andWhere('m.mediasSections = 1')
+//            ->join('m.categories', 'c');
+//
+//        if (!empty($search->categories)) {
+//            $query = $query
+//                ->andWhere('c.id IN (:categories)')
+//                ->setParameter('categories', $search->categories);
+//        }
+//
+//        $query = $query->getQuery();
+//        return $this->paginator->paginate(
+//            $query,
+//            $search->page,
+//            6
+//        );
+//    }
 
+    public function selectByCategoryAndSection(SearchData $search, $section = null): PaginationInterface
+    {
+
+        $query = $this->createQueryBuilder('m')
+            ->select('c', 'm')
+            ->leftJoin('m.categories', 'c');
+
+        if ($section != null) {
+            $query
+                ->leftJoin('m.mediasSections', 'ms')
+                ->andWhere('ms.id = :section')
+                ->setParameter(':section', $section);
+        }
         if (!empty($search->categories)) {
             $query = $query
                 ->andWhere('c.id IN (:categories)')
                 ->setParameter('categories', $search->categories);
+
         }
+            $query = $query->getQuery();
+            return $this->paginator->paginate(
+                $query,
+                $search->page,
+                8
+            );
 
-        $query = $query->getQuery();
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            6
-        );
-    }
-
-    /**
-     * Récupère tous les medias en lien avec une recherche
-     * @param SearchData $search
-     * @return PaginationInterface
-     */
-    public function findImagesType(SearchData $search): PaginationInterface
-    {
-        $query = $this
-            ->createQueryBuilder('m')
-            ->select('c', 'm')
-            ->andWhere('m.mediasSections = 1')
-            ->join('m.categories', 'c');
-
-        if (!empty($search->categories)) {
-            $query = $query
-                ->andWhere('c.id IN (:categories)')
-                ->setParameter('categories', $search->categories);
-        }
-
-        $query = $query->getQuery();
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            6
-        );
-    }
-
-    /**
-     * Récupère tous les medias en lien avec une recherche
-     * @param SearchData $search
-     * @return PaginationInterface
-     */
-    public function findMusicsType(SearchData $search): PaginationInterface
-    {
-        $query = $this
-            ->createQueryBuilder('m')
-            ->select('c', 'm')
-            ->andWhere('m.mediasSections = 2')
-            ->join('m.categories', 'c');
-
-        if (!empty($search->categories)) {
-            $query = $query
-                ->andWhere('c.id IN (:categories)')
-                ->setParameter('categories', $search->categories);
-        }
-
-        $query = $query->getQuery();
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            6
-        );
-    }
-
-    /**
-     * Récupère tous les medias en lien avec une recherche
-     * @param SearchData $search
-     * @return PaginationInterface
-     */
-    public function findVideosType(SearchData $search): PaginationInterface
-    {
-        $query = $this
-            ->createQueryBuilder('m')
-            ->select('c', 'm')
-            ->andWhere('m.mediasSections = 3')
-            ->join('m.categories', 'c');
-
-        if (!empty($search->categories)) {
-            $query = $query
-                ->andWhere('c.id IN (:categories)')
-                ->setParameter('categories', $search->categories);
-        }
-
-        $query = $query->getQuery();
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            6
-        );
-    }
-    /**
-     * Récupère tous les medias en lien avec une recherche
-     * @param SearchData $search
-     * @return PaginationInterface
-     */
-    public function findEditionType(SearchData $search): PaginationInterface
-    {
-        $query = $this
-            ->createQueryBuilder('m')
-            ->select('c', 'm')
-            ->andWhere('m.mediasSections = 4')
-            ->join('m.categories', 'c');
-
-        if (!empty($search->categories)) {
-            $query = $query
-                ->andWhere('c.id IN (:categories)')
-                ->setParameter('categories', $search->categories);
-        }
-
-        $query = $query->getQuery();
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            6
-        );
     }
 
 //    /**

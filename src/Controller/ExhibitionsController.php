@@ -15,10 +15,9 @@ class ExhibitionsController extends AbstractController
     #[Route('/exhibitions', name: 'app_exhibitions')]
     public function index(ExhibitionsRepository $exhibitionsRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $data = $exhibitionsRepository->findAll();
 
         $exhibitions = $paginator->paginate(
-            $data,
+            $exhibitionsRepository->findAll(),
             $request->query->getInt('page', 1),
             6
         );

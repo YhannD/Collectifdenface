@@ -27,7 +27,7 @@ class MediasController extends AbstractController
         $data->page = $request->get('page',1);
         $form = $this->createForm(SearchForm::class, $data);
         $form->handleRequest($request);
-        $medias = $mediasRepository->findSearch($data);
+        $medias = $mediasRepository->selectByCategoryAndSection($data);
         return $this->render('medias/index.html.twig', [
             'medias' => $medias,
             'form' =>$form->createView()
@@ -40,7 +40,7 @@ class MediasController extends AbstractController
         $data->page = $request->get('page',1);
         $form = $this->createForm(SearchForm::class, $data);
         $form->handleRequest($request);
-        $medias = $mediasRepository->findImagesType($data);
+        $medias = $mediasRepository->selectByCategoryAndSection($data, 1);
         return $this->render('medias/index.html.twig', [
             'medias' => $medias,
             'form' =>$form->createView()
@@ -53,7 +53,7 @@ class MediasController extends AbstractController
         $data->page = $request->get('page',1);
         $form = $this->createForm(SearchForm::class, $data);
         $form->handleRequest($request);
-        $medias = $mediasRepository->findMusicsType($data);
+        $medias = $mediasRepository->selectByCategoryAndSection($data, 2);
         return $this->render('medias/index.html.twig', [
             'medias' => $medias,
             'form' =>$form->createView()
@@ -67,7 +67,7 @@ class MediasController extends AbstractController
         $data->page = $request->get('page',1);
         $form = $this->createForm(SearchForm::class, $data);
         $form->handleRequest($request);
-        $medias = $mediasRepository->findVideosType($data);
+        $medias = $mediasRepository->selectByCategoryAndSection($data, 3);
         return $this->render('medias/index.html.twig', [
             'medias' => $medias,
             'form' =>$form->createView()
@@ -81,7 +81,7 @@ class MediasController extends AbstractController
         $data->page = $request->get('page',1);
         $form = $this->createForm(SearchForm::class, $data);
         $form->handleRequest($request);
-        $medias = $mediasRepository->findEditionType($data);
+        $medias = $mediasRepository->selectByCategoryAndSection($data, 4);
         return $this->render('medias/index.html.twig', [
             'medias' => $medias,
             'form' =>$form->createView()
