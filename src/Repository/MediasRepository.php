@@ -45,6 +45,65 @@ class MediasRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Returns all Annonces per page
+     * @return void
+     */
+    public function getPaginatedMedias($page, $limit, $filters = null, $section = null)
+    {
+        $query = $this->createQueryBuilder('m')
+            ->select('c', 'm')
+            ->leftJoin('m.categories', 'c')
+            ->orderBy('m.created_at', 'DESC');
+
+        // On filtre les données
+        if($filters != null){
+            $query->andWhere('c.id IN(:cats)')
+                ->setParameter(':cats', array_values($filters));
+        }
+
+        // On filtre les sections
+        if ($section != null) {
+            $query
+                ->leftJoin('m.mediasSections', 'ms')
+                ->andWhere('ms.id = :section')
+                ->setParameter(':section', $section);
+        }
+
+        $query->orderBy('m.created_at')
+            ->setFirstResult(($page * $limit) - $limit)
+            ->setMaxResults($limit)
+        ;
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * Returns number of Annonces
+     * @return void
+     */
+    public function getTotalMedias($filters = null, $section = null){
+        $query = $this->createQueryBuilder('m')
+            ->select('COUNT(m)')
+            ->leftJoin('m.categories', 'c')
+            ->orderBy('m.created_at', 'DESC');
+
+        // On filtre les données
+        if($filters != null){
+            $query->andWhere('c.id IN(:cats)')
+                ->setParameter(':cats', array_values($filters));
+        }
+
+        // On filtre les sections
+        if ($section != null) {
+            $query
+                ->leftJoin('m.mediasSections', 'ms')
+                ->andWhere('ms.id = :section')
+                ->setParameter(':section', $section);
+        }
+
+        return $query->getQuery()->getSingleScalarResult();
+    }
+
 //    /**
 //     * Récupère tous les medias en lien avec une recherche
 //     * @param SearchData $search
@@ -77,7 +136,8 @@ class MediasRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('m')
             ->select('c', 'm')
-            ->leftJoin('m.categories', 'c');
+            ->leftJoin('m.categories', 'c')
+            ->orderBy('m.created_at', 'DESC');
 
         if ($section != null) {
             $query

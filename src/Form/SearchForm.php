@@ -19,7 +19,7 @@ class SearchForm extends AbstractType
                 'required' => false,
                 'class' => Categories::class,
                 'expanded' => true,
-                'multiple' => true
+                'multiple' => true,
             ]);
     }
 

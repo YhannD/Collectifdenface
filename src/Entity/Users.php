@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\SlugTrait;
 use App\Repository\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,6 +15,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use SlugTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -52,6 +55,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Medias::class, orphanRemoval: true)]
     private Collection $medias;
 
+    #[ORM\Column]
+    private ?bool $isVisible = false;
+
     public function __construct()
     {
         $this->medias = new ArrayCollection();
@@ -59,6 +65,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString()
     {
+
         return $this->alias;
     }
 
@@ -96,7 +103,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = '';
+        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -104,6 +111,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
 
         return $this;
     }
@@ -230,6 +238,18 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
                 $media->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsVisible(): ?bool
+    {
+        return $this->isVisible;
+    }
+
+    public function setIsVisible(bool $isVisible): self
+    {
+        $this->isVisible = $isVisible;
 
         return $this;
     }

@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\CreatedAtTrait;
+//use App\Entity\Trait\SlugTrait;
+use App\Entity\Trait\SlugTrait;
 use App\Repository\ExhibitionsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,6 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ExhibitionsRepository::class)]
 class Exhibitions
 {
+    use CreatedAtTrait;
+    use SlugTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -27,6 +33,7 @@ class Exhibitions
     public function __construct()
     {
         $this->exhibitionsImages = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
     }
 
     public function __toString()

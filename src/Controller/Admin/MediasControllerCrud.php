@@ -15,10 +15,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('admin/medias')]
 class MediasControllerCrud extends AbstractController
 {
+    public function __construct(private SluggerInterface $slugger){}
+
     #[Route('/', name: 'app_medias_index_admin', methods: ['GET'])]
     public function index(MediasRepository $mediasRepository): Response
     {
@@ -64,6 +67,10 @@ class MediasControllerCrud extends AbstractController
                 $media->addMediasImage($mediasImage);
                 $media->setUser($this->getUser());
             }
+
+            $name = $form->get('name')->getData();
+            $media->setSlug($this->slugger->slug(strtolower($name)));
+
             $mediasRepository->add($media, true);
 
             return $this->redirectToRoute('app_medias_index_admin', [], Response::HTTP_SEE_OTHER);
@@ -119,6 +126,10 @@ class MediasControllerCrud extends AbstractController
                 $mediasImage->setName($fichier);
                 $media->addMediasImage($mediasImage);
             }
+
+            $name = $form->get('name')->getData();
+            $media->setSlug($this->slugger->slug(strtolower($name)));
+
             $mediasRepository->add($media, true);
 
             return $this->redirectToRoute('app_medias_index_admin', [], Response::HTTP_SEE_OTHER);

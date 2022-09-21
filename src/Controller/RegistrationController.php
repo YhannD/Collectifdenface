@@ -16,6 +16,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
@@ -23,7 +24,7 @@ class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
 
-    public function __construct(EmailVerifier $emailVerifier)
+    public function __construct(EmailVerifier $emailVerifier, private SluggerInterface $slugger)
     {
         $this->emailVerifier = $emailVerifier;
     }
@@ -44,6 +45,9 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $alias = $form->get('alias')->getData();
+            $user->setSlug($this->slugger->slug(strtolower($alias)));
+
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -56,6 +60,7 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
+
 
             return $userAuthenticator->authenticateUser(
                 $user,

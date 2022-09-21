@@ -10,7 +10,7 @@
         <div class="card-body">
             <h5 class="card-title">{{ media.name }}</h5>
             <p class="text text-muted">{{ media.description|length > 100 ? media.description|slice(0, 100) ~ '...' : media.description }}</p>
-            <a href="{{path('app_medias_details', {'id':media.id}) }}"
+            <a href="{{path('app_medias_details', {slug:media.slug}) }}"
                class="btn btn-primary">Voir la réalisation</a>
             <div>
                 {% for c in media.categories %}

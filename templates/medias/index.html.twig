@@ -1,5 +1,42 @@
 {% extends 'base.html.twig' %}
 
+{# On crée des variables personnalisées #}
+{% set queryParams = app.request.query.all %}
+
+{% block title %}Liste des productions{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="col-12">
+            <p>Filtrer</p>
+            <form id="filters">
+                {% for categorie in categories %}
+                    {# On vérifie si la catégorie est dans les paramètres #}
+                    {% if queryParams is not empty and queryParams.categories is defined %}
+                        {% set checked = (categorie.id in queryParams.categories) ? "checked" : "" %}
+                    {% else %}
+                        {% set checked = "" %}
+                    {% endif %}
+
+                    <p><input type="checkbox" name="categories[]" id="cat{{ categorie.id }}"
+                              value="{{ categorie.id }}" {{ checked }}> <label
+                                for="cat{{ categorie.id }}">{{ categorie.name }}</label></p>
+                {% endfor %}
+                <input type="hidden" name="page" value="{{ page }}">
+            </form>
+        </div>
+        <div id="content">
+            {% include "medias/_content.html.twig" %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/filters.js') }}"></script>
+{% endblock %}
+
+
+{# {% extends 'base.html.twig' %}
+
 {% block title %}Les réalisations{% endblock %}
 
 {% block body %}
@@ -19,9 +56,9 @@
                 {% include 'medias/_card.html.twig' %}
             {% endfor %}
 
-            <div class="mt-3">
-                {{ knp_pagination_render(medias) }}
+            <div class="mt-4">
+                {{ knp_pagination_render(medias,'_partials/twitter_bootstrap_v4_pagination.html.twig') }}
             </div>
         </section>
     </main>
-{% endblock %}
+{% endblock %} #}

@@ -32,15 +32,21 @@ class MediasType extends AbstractType
                 'required' => false,
                 'class' => Categories::class,
                 'expanded' => true,
-                'multiple' => true
+                'multiple' => true,
             ])
             ->add('mediasImages', FileType::class,[
                 'multiple'=> true,
                 'mapped' => false,
                 'required' => false,
             ])
-            ->add('mediasMusics',TextType::class,['required' => false, 'mapped' => false,])
-            ->add('mediasVideos',TextType::class,['required' => false,'mapped' => false,])
+            ->add('mediasMusics',TextType::class,[
+                'required' => false,
+                'mapped' => false,
+            ])
+            ->add('mediasVideos',TextType::class,[
+                'required' => false,
+                'mapped' => false,
+            ])
         ;
     }
 

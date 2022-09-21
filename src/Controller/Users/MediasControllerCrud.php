@@ -6,7 +6,6 @@ use App\Entity\Medias;
 use App\Entity\MediasImages;
 use App\Entity\MediasMusics;
 use App\Entity\MediasVideos;
-use App\Form\MediasType;
 use App\Form\MediasTypeUsers;
 use App\Repository\MediasImagesRepository;
 use App\Repository\MediasRepository;
@@ -15,10 +14,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('users/medias')]
 class MediasControllerCrud extends AbstractController
 {
+    public function __construct(private SluggerInterface $slugger){}
+
     #[Route('/', name: 'app_medias_index', methods: ['GET'])]
     public function index(MediasRepository $mediasRepository): Response
     {
@@ -64,6 +66,8 @@ class MediasControllerCrud extends AbstractController
                 $mediasImage->setName($fichier);
                 $media->addMediasImage($mediasImage);
             }
+            $name = $form->get('name')->getData();
+            $media->setSlug($this->slugger->slug(strtolower($name)));
 
             $media->setUser($this->getUser());
             $mediasRepository->add($media, true);
@@ -121,6 +125,10 @@ class MediasControllerCrud extends AbstractController
                 $mediasImage->setName($fichier);
                 $media->addMediasImage($mediasImage);
             }
+
+            $name = $form->get('name')->getData();
+            $media->setSlug($this->slugger->slug(strtolower($name)));
+
             $media->setUser($this->getUser());
             $mediasRepository->add($media, true);
 
@@ -157,4 +165,6 @@ class MediasControllerCrud extends AbstractController
             return new JsonResponse(['error'=> 'Token Invalide'],400);
         }
     }
+
+
 }

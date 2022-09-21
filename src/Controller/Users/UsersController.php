@@ -2,26 +2,26 @@
 
 namespace App\Controller\Users;
 
-use App\Entity\MediasImages;
-use App\Entity\Users;
 use App\Form\EditProfileType;
-use App\Repository\MediasImagesRepository;
 use App\Repository\UsersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
+#[Route('profile')]
 class UsersController extends AbstractController
 {
-    #[Route('/users', name: 'app_users')]
+    public function __construct(private SluggerInterface $slugger){}
+
+    #[Route('/', name: 'app_profile')]
     public function index(): Response
     {
         return $this->render('users/index.html.twig');
     }
 
-    #[Route('/users/profile/edit', name: 'app_users_profile_edit')]
+    #[Route('/profile/edit', name: 'app_profile_edit')]
     public function editProfile(UsersRepository $usersRepository, Request $request): Response
     {
         $user = $this->getUser();
@@ -39,10 +39,13 @@ class UsersController extends AbstractController
                 );
                 $user->setImage($data);
             }
+            $alias = $form->get('alias')->getData();
+            $user->setSlug($this->slugger->slug(strtolower($alias)));
+
             $usersRepository->add($user, true);
 
             $this->addFlash('message', 'Profil mis à jour');
-            return $this->redirectToRoute('app_users');
+            return $this->redirectToRoute('app_profile');
         }
 
         return $this->render('users/editprofile.html.twig', [

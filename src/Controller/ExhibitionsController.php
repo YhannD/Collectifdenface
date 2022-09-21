@@ -19,7 +19,7 @@ class ExhibitionsController extends AbstractController
         $exhibitions = $paginator->paginate(
             $exhibitionsRepository->findAll(),
             $request->query->getInt('page', 1),
-            6
+            8
         );
         return $this->render('exhibitions/index.html.twig', [
             'exhibitions' => $exhibitions,

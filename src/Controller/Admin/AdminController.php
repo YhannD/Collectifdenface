@@ -2,18 +2,19 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Medias;
 use App\Entity\Users;
 use App\Form\EditUserType;
-use App\Repository\MediasRepository;
 use App\Repository\UsersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AdminController extends AbstractController
 {
+    public function __construct(private SluggerInterface $slugger){}
+
     #[Route('/admin', name: 'app_admin')]
     public function index(): Response
     {
@@ -37,6 +38,19 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('image')->getData();
+            if ($image) {
+                $data = md5(uniqid()) . 'Controller' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('profiles_directory'),
+                    $data,
+                );
+                $users->setImage($data);
+            }
+
+            $alias = $form->get('alias')->getData();
+            $users->setSlug($this->slugger->slug(strtolower($alias)));
+
             $usersRepository->add($users, true);
 
             $this->addFlash('message', 'Utilisateur modifié avec succès');

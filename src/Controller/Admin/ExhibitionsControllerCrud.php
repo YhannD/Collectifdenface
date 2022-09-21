@@ -12,10 +12,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('admin/exhibitions')]
 class ExhibitionsControllerCrud extends AbstractController
 {
+
+    public function __construct(private SluggerInterface $slugger){}
+
     #[Route('/', name: 'app_exhibitions_index', methods: ['GET'])]
     public function index(ExhibitionsRepository $exhibitionsRepository): Response
     {
@@ -46,6 +50,10 @@ class ExhibitionsControllerCrud extends AbstractController
                 $exhibitionsImage->setName($fichier);
                 $exhibition->addExhibitionsImage($exhibitionsImage);
             }
+
+            $name = $form->get('name')->getData();
+            $exhibition->setSlug($this->slugger->slug(strtolower($name)));
+
             $exhibitionsRepository->add($exhibition, true);
 
             return $this->redirectToRoute('app_exhibitions_index', [], Response::HTTP_SEE_OTHER);
@@ -85,6 +93,10 @@ class ExhibitionsControllerCrud extends AbstractController
                 $exhibitionsImage->setName($fichier);
                 $exhibition->addExhibitionsImage($exhibitionsImage);
             }
+
+            $name = $form->get('name')->getData();
+            $exhibition->setSlug($this->slugger->slug(strtolower($name)));
+
             $exhibitionsRepository->add($exhibition, true);
 
             return $this->redirectToRoute('app_exhibitions_index', [], Response::HTTP_SEE_OTHER);

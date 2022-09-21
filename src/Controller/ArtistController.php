@@ -15,7 +15,7 @@ class ArtistController extends AbstractController
     #[Route('/artists', name: 'app_artists')]
     public function index(UsersRepository $usersRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $data = $usersRepository->findAll();
+        $data = $usersRepository->findby(['isVisible'=> true]);
 
         $users = $paginator->paginate(
             $data,
@@ -25,10 +25,10 @@ class ArtistController extends AbstractController
         return $this->render('artist/index.html.twig', compact('users'));
     }
 
-    #[Route('/artists/{alias}', name: 'app_artists_artiste')]
-    public function details($alias, UsersRepository $usersRepository, MediasRepository $mediasRepository, PaginatorInterface $paginator, Request $request): Response
+    #[Route('/artists/{slug}', name: 'app_artists_artiste')]
+    public function details($slug, UsersRepository $usersRepository, MediasRepository $mediasRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $users = $usersRepository->findOneBy(['alias'=>$alias]);
+        $users = $usersRepository->findOneBy(['slug'=>$slug]);
         $data = $mediasRepository->findBy(['user'=>$users]);
 
         $medias = $paginator->paginate(
