@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Exhibitions{% endblock %}
+{% block title %}Ajouter une exposition{% endblock %}
 
 {% block body %}
-    <h1>Create new Exhibitions</h1>
+    <main class="container">
+        <h1>Ajouter une exposition</h1>
 
-    {{ include('admin/exhibitions/_form.html.twig') }}
+        {{ include('admin/exhibitions/_form.html.twig') }}
 
-    <a href="{{ path('app_exhibitions_index') }}">back to list</a>
+        <a class="btn btn-outline-secondary" href="{{ path('app_exhibitions_index') }}">Retour à liste</a>
+    </main>
 {% endblock %}

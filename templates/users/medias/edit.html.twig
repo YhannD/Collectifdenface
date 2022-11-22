@@ -1,15 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Medias{% endblock %}
+{% block title %}Modifier un medias{% endblock %}
 
 {% block body %}
-    <h1>Edit Medias</h1>
+<main class="container">
 
-    {{ include('users/medias/_form.html.twig', {'button_label': 'Update'}) }}
+    <h1>Modifier un medias</h1>
 
-    <a href="{{ path('app_medias_index') }}">back to list</a>
+    {{ include('users/medias/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    <a class="btn btn-outline-secondary" href="{{ path('app_medias_index') }}">Retour à la liste</a>
 
     {{ include('users/medias/_delete_form.html.twig') }}
+
+</main>
+
 {% endblock %}
 
 {% block javascripts %}

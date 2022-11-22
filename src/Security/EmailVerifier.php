@@ -45,6 +45,7 @@ class EmailVerifier
         $this->verifyEmailHelper->validateEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
 
         $user->setIsVerified(true);
+        $user->setRoles(['ROLE_USER']);// Rajout manuel du rôle après la validation de l'email.
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

@@ -50,6 +50,14 @@ class EditUserType extends AbstractType
                     'Visible' => true,
                     'Invisible' => false,
                 ],
+                'label' => 'Profil visible'
+            ])
+            ->add('isVerified',ChoiceType::class, [
+                'choices' => [
+                    'Vérifié' => true,
+                    'Non vérifié' => false,
+                ],
+                'label' => 'Email vérifié'
             ])
             ->add('valider', SubmitType::class)
         ;

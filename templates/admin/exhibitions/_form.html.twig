@@ -7,10 +7,10 @@
     {% for exhibitionsImage in exhibition.exhibitionsImages %}
         <div>
             <img src="{{ asset('assets/uploads/exhibitions/' ~ exhibitionsImage.name) }}" alt="Image" width="150">
-            <a href="{{ path('app_exhibitions_delete_image' , {'id': exhibitionsImage.id}) }}" data-delete
+            <a class="btn btn-outline-secondary" href="{{ path('app_exhibitions_delete_image' , {'id': exhibitionsImage.id}) }}" data-delete
                data-token="{{ csrf_token('delete' ~ exhibitionsImage.id) }}">Supprimer</a>
         </div>
     {% endfor %}
 {% endif %}
-<button class="btn">{{ button_label|default('Save') }}</button>
+<button class="btn btn-primary">{{ button_label|default('Enregister') }}</button>
 {{ form_end(form) }}

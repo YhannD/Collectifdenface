@@ -1,39 +1,45 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Exhibitions index{% endblock %}
+{% block title %}Liste des expositions{% endblock %}
 
 {% block body %}
-    <h1>Exhibitions index</h1>
+    <main class="container">
 
-    <table class="table">
-        <thead>
+        <h1>Liste des expositions</h1>
+
+        <a class="btn btn-primary" href="{{ path('app_exhibitions_new') }}">Créer une nouvelle exposition</a>
+
+        <table class="table">
+            <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
+                <th>Nom des expositions</th>
                 <th>Description</th>
                 <th>Couverture</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for exhibition in exhibitions %}
-            <tr>
-                <td>{{ exhibition.id }}</td>
-                <td>{{ exhibition.name }}</td>
-                <td>{{ exhibition.description }}</td>
-                <td><img src="{{ asset('assets/uploads/exhibitions/' ~ exhibition.exhibitionsImages[0].name) }}" alt="Image" width="50"></td>
-                <td>
-                    <a href="{{ path('app_exhibitions_show', {'id': exhibition.id}) }}">show</a>
-                    <a href="{{ path('app_exhibitions_edit', {'id': exhibition.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for exhibition in exhibitions %}
+                <tr>
+                    <td>{{ exhibition.name }}</td>
+                    <td>{{ exhibition.description }}</td>
+                    <td><img src="{{ asset('assets/uploads/exhibitions/' ~ exhibition.exhibitionsImages[0].name) }}"
+                             alt="Image" width="50"></td>
+                    <td>
+                        <a class="btn btn-outline-secondary"
+                           href="{{ path('app_exhibitions_show', {'id': exhibition.id}) }}">Voir</a>
+                        <a class="btn btn-outline-secondary"
+                           href="{{ path('app_exhibitions_edit', {'id': exhibition.id}) }}">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucune expositions trouvée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('app_exhibitions_new') }}">Create new</a>
+        <a class="btn btn-primary" href="{{ path('app_exhibitions_new') }}">Créer une nouvelle exposition</a>
+    </main>
 {% endblock %}

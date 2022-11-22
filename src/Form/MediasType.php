@@ -5,8 +5,12 @@ namespace App\Form;
 use App\Entity\Categories;
 use App\Entity\Medias;
 use App\Entity\MediasSections;
+use App\Entity\Users;
+use http\Client\Curl\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\ChoiceList;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,8 +21,12 @@ class MediasType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('description')
+            ->add('name', TextType::class, [
+                'label' => 'Nom du media'
+            ])
+            ->add('description', TextType::class, [
+                'label' => 'Description du media'
+            ])
             ->add('mediasSections', EntityType::class, [
                 'label' => false,
                 'required' => true,
@@ -26,7 +34,10 @@ class MediasType extends AbstractType
                 'expanded' => true,
                 'multiple' => false
             ])
-            ->add('user')
+            ->add('user',EntityType::class, [
+                'label' => 'Utilisateurs',
+                'class' => Users::class,
+            ])
             ->add('categories', EntityType::class, [
                 'label' => false,
                 'required' => false,

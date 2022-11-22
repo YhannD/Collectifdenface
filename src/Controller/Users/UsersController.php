@@ -13,7 +13,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[Route('profile')]
 class UsersController extends AbstractController
 {
-    public function __construct(private SluggerInterface $slugger){}
+    public function __construct(private readonly SluggerInterface $slugger){}
 
     #[Route('/', name: 'app_profile')]
     public function index(): Response

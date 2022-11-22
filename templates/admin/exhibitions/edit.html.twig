@@ -1,17 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Exhibitions{% endblock %}
+{% block title %}Modifier une exposition{% endblock %}
 
 {% block body %}
-    <h1>Edit Exhibitions</h1>
+    <main class="container">
 
-    {{ include('admin/exhibitions/_form.html.twig', {'button_label': 'Update'}) }}
+        <h1>Modifier une exposition</h1>
 
-    <a href="{{ path('app_exhibitions_index') }}">back to list</a>
+        {{ include('admin/exhibitions/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
-    {{ include('admin/exhibitions/_delete_form.html.twig') }}
+        <a class="btn btn-outline-secondary" href="{{ path('app_exhibitions_index') }}">Retour à la liste</a>
+
+        {{ include('admin/exhibitions/_delete_form.html.twig') }}
+
+    </main>
+
 {% endblock %}
 
-{% block javascripts %}
-    <script src="{{ asset('assets/js/images.js') }}"></script>
-{% endblock %}
+    {% block javascripts %}
+        <script src="{{ asset('assets/js/images.js') }}"></script>
+
+    {% endblock %}

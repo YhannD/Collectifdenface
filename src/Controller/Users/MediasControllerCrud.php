@@ -19,7 +19,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[Route('users/medias')]
 class MediasControllerCrud extends AbstractController
 {
-    public function __construct(private SluggerInterface $slugger){}
+    public function __construct(private readonly SluggerInterface $slugger){}
 
     #[Route('/', name: 'app_medias_index', methods: ['GET'])]
     public function index(MediasRepository $mediasRepository): Response

@@ -6,7 +6,6 @@ use App\Entity\Medias;
 use App\Entity\MediasImages;
 use App\Entity\MediasMusics;
 use App\Entity\MediasVideos;
-use App\Entity\Users;
 use App\Form\MediasType;
 use App\Repository\MediasImagesRepository;
 use App\Repository\MediasRepository;
@@ -20,7 +19,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[Route('admin/medias')]
 class MediasControllerCrud extends AbstractController
 {
-    public function __construct(private SluggerInterface $slugger){}
+    public function __construct(private readonly SluggerInterface $slugger){}
 
     #[Route('/', name: 'app_medias_index_admin', methods: ['GET'])]
     public function index(MediasRepository $mediasRepository): Response

@@ -15,7 +15,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class CategoriesControllerCrud extends AbstractController
 {
 
-    public function __construct(private SluggerInterface $slugger){}
+    public function __construct(private readonly SluggerInterface $slugger){}
 
     #[Route('/', name: 'app_categories_index', methods: ['GET'])]
     public function index(CategoriesRepository $categoriesRepository): Response

@@ -7,7 +7,6 @@ use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
 use App\Security\UsersAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
-use http\Client;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

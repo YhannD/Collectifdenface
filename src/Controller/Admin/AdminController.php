@@ -11,27 +11,28 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+#[Route('admin/admin')]
 class AdminController extends AbstractController
 {
-    public function __construct(private SluggerInterface $slugger){}
+    public function __construct(private readonly SluggerInterface $slugger){}
 
-    #[Route('/admin', name: 'app_admin')]
-    public function index(): Response
-    {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
-        ]);
-    }
+//    #[Route('/', name: 'app_admin')]
+//    public function index(): Response
+//    {
+//        return $this->render('admin/index.html.twig', [
+//            'controller_name' => 'AdminController',
+//        ]);
+//    }
 
-    #[Route('/admin/utilisateurs', name: 'app_admin_utilisateurs')]
+    #[Route('/utilisateurs', name: 'app_admin_utilisateurs')]
     public function usersList(UsersRepository $users): Response
     {
-        return $this->render('admin/users.html.twig', [
+        return $this->render('admin/users/users.html.twig', [
             'users' => $users->findAll(),
         ]);
     }
 
-    #[Route('/admin/utilisateurs/modifier/{id}', name: 'app_admin_modifier_utilisateurs')]
+    #[Route('/utilisateurs/modifier/{id}', name: 'app_admin_modifier_utilisateurs')]
     public function editUser(UsersRepository $usersRepository, Users $users, Request $request): Response
     {
         $form = $this->createForm(EditUserType::class, $users);
@@ -57,13 +58,13 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('app_admin_utilisateurs');
         }
 
-        return $this->render('admin/edituser.html.twig', [
+        return $this->render('admin/users/edituser.html.twig', [
             'userForm' => $form->createView(),
             'users'=>$users
         ]);
     }
 
-    #[Route('/admin/{id}', name: 'app_admin_supprimer_utilisateurs', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_admin_supprimer_utilisateurs', methods: ['POST'])]
     public function delete(Request $request, Users $users, UsersRepository $usersRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$users->getId(), $request->request->get('_token'))) {

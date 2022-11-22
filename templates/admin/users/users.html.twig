@@ -3,20 +3,24 @@
 {% block title %}Liste des utilisateurs{% endblock %}
 
 {% block body %}
+    <main class="container">
     <h1>Liste des utilisateurs</h1>
-    <table>
+    <table class="table">
         <thead>
-        <th>ID</th>
+        <tr>
+        <th>Identité</th>
+        <th>Nom d'artiste</th>
         <th>Email</th>
         <th>Rôles</th>
-        <th>Identité</th>
         <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
         {# On boucle sur les utilisateurs #}
         {% for user in users %}
             <tr>
-                <td>{{ user.id }}</td>
+                <td>{{ user.lastname }} {{ user.firstname }} </td>
+                <td>{{ user.alias }}  </td>
                 <td>{{ user.email }}</td>
                 <td>
                     {# On boucle sur les rôles #}
@@ -30,8 +34,9 @@
                         {% endif %}
                     {% endfor %}
                 </td>
-                <td>{{ user.lastname }} {{ user.firstname }} </td>
-                <td><a href="{{ path('app_admin_modifier_utilisateurs', {'id': user.id}) }}">Modifier</a></td>
+                <td>
+                    <a class="btn btn-outline-secondary" href="{{ path('app_admin_modifier_utilisateurs', {'id': user.id}) }}">Modifier</a>
+                </td>
 
             </tr>
 
@@ -40,5 +45,6 @@
         {% endfor %}
         </tbody>
     </table>
+    </main>
 
 {% endblock %}
