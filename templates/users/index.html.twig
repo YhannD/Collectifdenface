@@ -6,7 +6,7 @@
     <div class="container text-start">
         <div class="row">
             <div class="col">
-                <h2>Profil de {{ app.user.alias }}</h2>
+                <h2>{{ app.user.alias }}</h2>
             </div>
         </div>
     </div>
@@ -15,11 +15,11 @@
             <div class="card">
                 <img src="{{ asset('assets/uploads/profiles/' ~ app.user.image) }}" alt="Image" width="150">
                 <div class="card-body">
-                    <h5 class="card-title">{{ app.user.alias }}</h5>
+{#                    <h5 class="card-title">{{ app.user.alias }}</h5>#}
                     <p class="text text-muted">{{ app.user.description}}</p>
                 </div>
             </div>
         </div>
-        <a href="{{ path('app_profile_edit') }}" class="btn btn-primary mt-3">Modifier le profil</a>
+        <a href="{{ path('app_profile_edit') }}" class="btn btn-primary mt-3">Modifier mon profil</a>
     </div>
 {% endblock %}

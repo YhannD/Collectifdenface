@@ -1,17 +1,18 @@
 {% extends 'users.html.twig' %}
 
-{% block title %}Modification du profil de {{ app.user.firstname }} {{ app.user.lastname }}{% endblock %}
+{% block title %}Modification de mon profil{% endblock %}
 
 {% block body %}
     <div class=" container">
         <div class="col">
-            <h1>Modification du profil de {{ app.user.alias }}</h1>
+            <h1>Modification de mon profil</h1>
             <div>
                 <h5>Image de profil</h5>
                 <img src="{{ asset('assets/uploads/profiles/' ~ app.user.image) }}" alt="Image" width="150">
             </div>
             {{ form(form) }}
         </div>
+        <a class="btn btn-outline-secondary" href="{{ path('app_profile') }}">Retour </a>
 
     </div>
 {% endblock %}

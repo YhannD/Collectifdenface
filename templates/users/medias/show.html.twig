@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des médias{% endblock %}
+{% block title %}{{ media.name }}{% endblock %}
 
 {% block body %}
     <main class="container">
-        <h1>Liste des médias</h1>
+        <h1>{{ media.name }}</h1>
 
         <table class="table">
             <tbody>
             <tr>
-                <th>Nom du média</th>
+                <th>Titre</th>
                 <td>{{ media.name }}</td>
             </tr>
             <tr>

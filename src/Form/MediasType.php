@@ -49,14 +49,23 @@ class MediasType extends AbstractType
                 'multiple'=> true,
                 'mapped' => false,
                 'required' => false,
+                'label' => 'Image(s)',
             ])
             ->add('mediasMusics',TextType::class,[
                 'required' => false,
                 'mapped' => false,
+                'label' => 'Musique',
+                'attr' => [
+                    'placeholder' => 'Copier l\'URL ici',
+                ]
             ])
             ->add('mediasVideos',TextType::class,[
                 'required' => false,
                 'mapped' => false,
+                'label' => 'Vidéo',
+                'attr' => [
+                    'placeholder' => 'Copier l\'URL ici',
+                ]
             ])
         ;
     }

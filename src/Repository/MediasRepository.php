@@ -104,6 +104,15 @@ class MediasRepository extends ServiceEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
+    public function search($mots = null){
+        $query = $this->createQueryBuilder('m');
+        if($mots != null){
+            $query->andWhere('MATCH_AGAINST(m.name, m.description) AGAINST (:mots boolean)>0')
+                ->setParameter('mots', $mots);
+        }
+
+        return $query->getQuery()->getResult();
+    }
 //    /**
 //     * Récupère tous les medias en lien avec une recherche
 //     * @param SearchData $search
