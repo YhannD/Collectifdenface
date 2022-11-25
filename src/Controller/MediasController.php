@@ -38,16 +38,7 @@ class MediasController extends AbstractController
 //    }
     public function index(MediasRepository $mediasRepository, CategoriesRepository $categoriesRepository, Request $request/*, CacheInterface $cache*/): JsonResponse|Response
     {
-        $form = $this->createForm(SearchMediaType::class);
 
-        $search = $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()){
-            // On recherche les médias correspondant aux mots clés
-            $medias = $mediasRepository->search(
-                $search->get('mots')->getData()
-            );
-        }
         // On définit le nombre d'éléments par page
         $limit = 10;
 
@@ -78,14 +69,7 @@ class MediasController extends AbstractController
 
         $categories = $categoriesRepository->findAll();
 
-        return $this->render('medias/index.html.twig', /*compact('medias', 'total', 'limit', 'page', 'categories')*/[
-            'medias'=>$medias,
-            'total'=>$total,
-            'limit'=>$limit,
-            'page'=>$page,
-            'categories'=>$categories,
-            'form' => $form->createView()
-        ]);
+        return $this->render('medias/index.html.twig', compact('medias', 'total', 'limit', 'page', 'categories'));
     }
 
     #[Route('/images', name: 'app_medias_images')]
