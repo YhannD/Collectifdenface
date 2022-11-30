@@ -49,12 +49,17 @@ class MediasRepository extends ServiceEntityRepository
      * Returns all Annonces per page
      * @return void
      */
-    public function getPaginatedMedias($page, $limit, $filters = null, $section = null)
+    public function getPaginatedMedias($page, $limit, $filters = null, $section = null, $mots = null)
     {
         $query = $this->createQueryBuilder('m')
             ->select('c', 'm')
             ->leftJoin('m.categories', 'c')
             ->orderBy('m.created_at', 'DESC');
+
+        if($mots != null){
+            $query->andWhere('MATCH_AGAINST(m.name, m.description) AGAINST (:mots boolean)>0')
+                ->setParameter('mots', $mots);
+        }
 
         // On filtre les données
         if($filters != null){
@@ -81,11 +86,16 @@ class MediasRepository extends ServiceEntityRepository
      * Returns number of Annonces
      * @return void
      */
-    public function getTotalMedias($filters = null, $section = null){
+    public function getTotalMedias($filters = null, $section = null, $mots = null){
         $query = $this->createQueryBuilder('m')
             ->select('COUNT(m)')
             ->leftJoin('m.categories', 'c')
             ->orderBy('m.created_at', 'DESC');
+
+//        if($mots != null){
+//            $query->andWhere('MATCH_AGAINST(m.name, m.description) AGAINST (:mots boolean)>0')
+//                ->setParameter('mots', $mots);
+//        }
 
         // On filtre les données
         if($filters != null){
@@ -104,15 +114,24 @@ class MediasRepository extends ServiceEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-//    public function search($mots = null){
-//        $query = $this->createQueryBuilder('m');
-//        if($mots != null){
-//            $query->andWhere('MATCH_AGAINST(m.name, m.description) AGAINST (:mots boolean)>0')
-//                ->setParameter('mots', $mots);
+    public function search($mots = null, $categorie = null, $filters = null){
+        $query = $this->createQueryBuilder('m');
+        if($mots != null){
+            $query->andWhere('MATCH_AGAINST(m.name, m.description) AGAINST (:mots boolean)>0')
+                ->setParameter('mots', $mots);
+        }
+//        if($categorie != null){
+//            $query->leftJoin('m.categories', 'c');
+//            $query->andWhere('c.id = :id')
+//                ->setParameter('id', $categorie);
 //        }
-//
-//        return $query->getQuery()->getResult();
-//    }
+        // On filtre les données
+        if($filters != null){
+            $query->andWhere('c.id IN(:cats)')
+                ->setParameter(':cats', array_values($filters));
+        }
+        return $query->getQuery()->getResult();
+    }
 //    /**
 //     * Récupère tous les medias en lien avec une recherche
 //     * @param SearchData $search

@@ -2,7 +2,8 @@
     <div class="col-3 mt-3">
         <div class="card h-100">
             {% if media.mediasImages[0].name is defined %}
-                <img src="{{ asset('assets/uploads/medias/' ~ media.mediasImages[0].name) }}" alt="" class="card-img-top">
+                <img src="{{ asset('assets/uploads/medias/' ~ media.mediasImages[0].name) }}" alt=""
+                     class="card-img-top">
             {% elseif media.mediasVideos[0].name is defined %}
                 <img src="{{ asset('assets/uploads/front/default.png') }}" alt="Image" class="card-img-top">
             {% elseif media.mediasMusics[0].name is defined %}
@@ -11,7 +12,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{ media.name }}</h5>
                 <p class="text text-muted">{{ media.description|length > 100 ? media.description|slice(0, 100) ~ '...' : media.description }}</p>
-                <a href="{{path('app_medias_details', {slug:media.slug}) }}"
+                <a href="{{ path('app_medias_details', {slug:media.slug}) }}"
                    class="btn btn-primary">Voir la réalisation</a>
                 <div>
                     {% for c in media.categories %}
@@ -26,6 +27,7 @@
     </div>
 {% endfor %}
 
+
     {# On crée des variables personnalisées #}
     {% set queryParams = app.request.query.all %}
     {% set queryString = queryParams|filter((v, k) => k != "page" and k != "ajax")|url_encode %}
@@ -33,29 +35,29 @@
 
 <ul class="pagination">
     <li class="{{ (page == 1) ? 'disabled' : '' }}">
-        <a href="?page=1&{{queryString}}">
-{#            <i class="fas fa-step-backward"></i>#}
+        <a href="?page=1&{{ queryString }}">
+            {#            <i class="fas fa-step-backward"></i> #}
         </a>
     </li>
     <li class="{{ (page == 1) ? 'disabled' : '' }}">
-        <a href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}&{{queryString}}">
-{#            <i class="fas fa-angle-left"></i>#}
+        <a href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}&{{ queryString }}">
+            {#            <i class="fas fa-angle-left"></i> #}
         </a>
     </li>
     {% set pages = (total / limit)|round(0, 'ceil') %}
     {% for item in 1..pages %}
         <li class="{{ (page == item) ? 'active' : '' }}">
-            <a href="?page={{ item }}&{{queryString}}">{{ item }}</a>
+            <a href="?page={{ item }}&{{ queryString }}">{{ item }}</a>
         </li>
     {% endfor %}
     <li class="{{ (page == pages) ? 'disabled' : '' }}">
-        <a href="{{ (page < pages) ? '?page=' ~ (page + 1) : '' }}&{{queryString}}">
-{#            <i class="fas fa-angle-right"></i>#}
+        <a href="{{ (page < pages) ? '?page=' ~ (page + 1) : '' }}&{{ queryString }}">
+            {#            <i class="fas fa-angle-right"></i> #}
         </a>
     </li>
     <li class="{{ (page == pages) ? 'disabled' : '' }}">
-        <a href="?page={{ pages }}&{{queryString}}">
-{#            <i class="fas fa-step-forward"></i>#}
+        <a href="?page={{ pages }}&{{ queryString }}">
+            {#            <i class="fas fa-step-forward"></i> #}
         </a>
     </li>
 

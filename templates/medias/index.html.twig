@@ -6,27 +6,37 @@
 {% block title %}Liste des productions{% endblock %}
 {% block body %}
     <div class="container">
+
         <div class="col-12">
             <p>Filtrer</p>
             <form id="filters">
-                {% for categorie in categories %}
-                    {# On vérifie si la catégorie est dans les paramètres #}
-                    {% if queryParams is not empty and queryParams.categories is defined %}
-                        {% set checked = (categorie.id in queryParams.categories) ? "checked" : "" %}
-                    {% else %}
-                        {% set checked = "" %}
-                    {% endif %}
+                <div class="d-flex justify-content-evenly">
+                    <label for="mots">Rechercher:</label>
 
-                    <p><input type="checkbox" name="categories[]" id="cat{{ categorie.id }}"
-                              value="{{ categorie.id }}" {{ checked }}> <label
-                                for="cat{{ categorie.id }}">{{ categorie.name }}</label></p>
-                {% endfor %}
-                <input type="hidden" name="page" value="{{ page }}">
+                    <input type="text" id="mots" name="mots" >
+                    {% for categorie in categories %}
+                        {# On vérifie si la catégorie est dans les paramètres #}
+                        {% if queryParams is not empty and queryParams.categories is defined %}
+                            {% set checked = (categorie.id in queryParams.categories) ? "checked" : "" %}
+                        {% else %}
+                            {% set checked = "" %}
+                        {% endif %}
+
+                        <p><input type="checkbox" name="categories[]" id="cat{{ categorie.id }}"
+                                  value="{{ categorie.id }}" {{ checked }}>
+                            <label for="cat{{ categorie.id }}">{{ categorie.name }}</label></p>
+                    {% endfor %}
+                    <input type="hidden" name="page" value="{{ page }}">
+{#                    <input type="submit">#}
+                </div>
             </form>
+
         </div>
-        <div id="content">
+
+        <div id="content" class="row">
             {% include "medias/_content.html.twig" %}
         </div>
+
     </div>
 {% endblock %}
 

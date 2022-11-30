@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\Index;
 /*
  *Ligne de commande doctrine qui permet et participe à la recherche fulltext
  */
-//#[Index(columns: ["name", "description"], name: "media", flags:["fulltext"])]
+#[Index(columns: ["name", "description"], name: "medias", flags:["fulltext"])]
 class Medias
 {
     use CreatedAtTrait;
