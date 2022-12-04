@@ -32,7 +32,7 @@ window.onload = () => {
             history.pushState({}, null, Url.pathname + "?" + Params.toString());
         }).catch(e => alert(e));
 
-    };
+    }
     const FiltersForm = document.querySelector("#filters");
 
     // On boucle sur les inputs
