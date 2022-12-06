@@ -16,26 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(MediasRepository $mediasRepository, Request $request): Response
+    public function index(): Response
     {
-        $medias = $mediasRepository->findAll();
 
-        $form =$this->createForm((SearchMediaType::class));
-
-        $search = $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()){
-            //on recherche les médias qui correspondent aux mots clefs
-            $medias = $mediasRepository->search(
-                $search->get('mots')->getData(),
-                $search->get('categorie')->getData(),
-            );
-        }
 
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
-            'medias' => $medias,
-            'form' => $form->createView()
         ]);
     }
     #[Route('/about', name: 'app_about')]
