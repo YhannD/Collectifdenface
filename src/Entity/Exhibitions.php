@@ -27,6 +27,9 @@ class Exhibitions
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
+    #[ORM\Column]
+    private ?int $year = null;
+
     #[ORM\OneToMany(mappedBy: 'exhibition', targetEntity: ExhibitionsImages::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $exhibitionsImages;
 
@@ -66,6 +69,17 @@ class Exhibitions
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(int $year): self
+    {
+        $this->year = $year;
 
         return $this;
     }

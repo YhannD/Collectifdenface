@@ -56,34 +56,7 @@ class MediasController extends AbstractController
 //dd($medias);
         // On récupère le nombre total d'annonces
         $total = $mediasRepository->getTotalMedias($filters);
-//dd($total);
-        // On vérifie si on a une requête Ajax
-//        if($request->get('ajax')){
-//            return new JsonResponse([
-//                'content' => $this->renderView('medias/_content.html.twig', compact('medias', 'total', 'limit', 'page'))
-//            ]);
-//        }
 
-        /*// On va chercher toutes les catégories
-        $categories = $cache->get('categories_list', function(ItemInterface $item) use($catRepo){
-            $item->expiresAfter(3600);
-
-            return $catRepo->findAll();
-        });*/
-
-        $form =$this->createForm((SearchMediaType::class));
-
-        $search = $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()){
-            //on recherche les médias qui correspondent aux mots clefs
-            $medias = $mediasRepository->search(
-                $search->get('mots')->getData(),
-//                $search->get('categorie')->getData(),
-//                $search->get('filters')->getData(),
-            );
-            dd($medias);
-        }
         $categories = $categoriesRepository->findAll();
 
         // On vérifie si on a une requête Ajax
@@ -95,7 +68,6 @@ class MediasController extends AbstractController
                     'page' => $page,
                     'categories' => $categories,
                     'medias' => $medias,
-                    'form' => $form->createView()
             ])]);
         }
 
@@ -107,7 +79,6 @@ class MediasController extends AbstractController
             'page' => $page,
             'categories' => $categories,
             'medias' => $medias,
-            'form' => $form->createView()
         ]);
     }
 
@@ -133,17 +104,28 @@ class MediasController extends AbstractController
 
         // On récupère les filtres
         $filters = $request->get("categories");
+
+        $mots = $request->query->get("mots");
+
         // On récupère les annonces de la page en fonction du filtre
-        $medias = $mediasRepository->getPaginatedMedias($page, $limit, $filters, 1);
+        $medias = $mediasRepository->getPaginatedMedias($page, $limit, $filters, 1, $mots);
 //dd($medias);
         // On récupère le nombre total d'annonces
         $total = $mediasRepository->getTotalMedias($filters, 1);
 //dd($total);
+
+        $categories = $categoriesRepository->findAll();
+
         // On vérifie si on a une requête Ajax
         if($request->get('ajax')){
             return new JsonResponse([
-                'content' => $this->renderView('medias/_content.html.twig', compact('medias', 'total', 'limit', 'page'))
-            ]);
+                'content' => $this->renderView('medias/_content.html.twig', [
+                    'total' => $total,
+                    'limit' => $limit,
+                    'page' => $page,
+                    'categories' => $categories,
+                    'medias' => $medias,
+                ])]);
         }
 
         /*// On va chercher toutes les catégories
@@ -153,9 +135,15 @@ class MediasController extends AbstractController
             return $catRepo->findAll();
         });*/
 
-        $categories = $categoriesRepository->findAll();
 
-        return $this->render('medias/index.html.twig', compact('medias', 'total', 'limit', 'page', 'categories'));
+
+        return $this->render('medias/index.html.twig', [
+            'total' => $total,
+            'limit' => $limit,
+            'page' => $page,
+            'categories' => $categories,
+            'medias' => $medias,
+        ]);
     }
 
     #[Route('/musics', name: 'app_medias_musics')]
@@ -169,8 +157,11 @@ class MediasController extends AbstractController
 
         // On récupère les filtres
         $filters = $request->get("categories");
+
+        $mots = $request->query->get("mots");
+
         // On récupère les annonces de la page en fonction du filtre
-        $medias = $mediasRepository->getPaginatedMedias($page, $limit, $filters, 2);
+        $medias = $mediasRepository->getPaginatedMedias($page, $limit, $filters, 2, $mots);
 //dd($medias);
         // On récupère le nombre total d'annonces
         $total = $mediasRepository->getTotalMedias($filters, 2);
@@ -204,8 +195,11 @@ class MediasController extends AbstractController
 
         // On récupère les filtres
         $filters = $request->get("categories");
+
+        $mots = $request->query->get("mots");
+
         // On récupère les annonces de la page en fonction du filtre
-        $medias = $mediasRepository->getPaginatedMedias($page, $limit, $filters,3);
+        $medias = $mediasRepository->getPaginatedMedias($page, $limit, $filters,3, $mots);
 //dd($medias);
         // On récupère le nombre total d'annonces
         $total = $mediasRepository->getTotalMedias($filters, 3);
@@ -239,8 +233,11 @@ class MediasController extends AbstractController
 
         // On récupère les filtres
         $filters = $request->get("categories");
+
+        $mots = $request->query->get("mots");
+
         // On récupère les annonces de la page en fonction du filtre
-        $medias = $mediasRepository->getPaginatedMedias($page, $limit, $filters,4);
+        $medias = $mediasRepository->getPaginatedMedias($page, $limit, $filters,4, $mots);
 //dd($medias);
         // On récupère le nombre total d'annonces
         $total = $mediasRepository->getTotalMedias($filters, 4);

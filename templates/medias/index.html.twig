@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseMedia.html.twig' %}
 
 {# On crée des variables personnalisées #}
 {% set queryParams = app.request.query.all %}
@@ -12,8 +12,8 @@
             <form id="filters">
                 <div class="d-flex justify-content-evenly">
                     <label for="mots">Rechercher:</label>
-
                     <input type="text" id="mots" name="mots" >
+                    <button id="clearText" type="button">Effacer le texte</button>
                     {% for categorie in categories %}
                         {# On vérifie si la catégorie est dans les paramètres #}
                         {% if queryParams is not empty and queryParams.categories is defined %}
@@ -40,9 +40,9 @@
     </div>
 {% endblock %}
 
-{% block javascripts %}
-    <script src="{{ asset('assets/js/filters.js') }}"></script>
-{% endblock %}
+{#{% block javascripts %}#}
+{#    <script src="{{ asset('assets/js/filters.js') }}"></script>#}
+{#{% endblock %}#}
 
 
 {# {% extends 'base.html.twig' %}

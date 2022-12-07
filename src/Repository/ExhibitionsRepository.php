@@ -39,6 +39,62 @@ class ExhibitionsRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Returns all Annonces per page
+     * @return void
+     */
+    public function getPaginatedExhibitions($page, $limit, $filters = null,)
+    {
+        $query = $this->createQueryBuilder('m')
+            ->select('c', 'm')
+            ->leftJoin('m.categories', 'c')
+            ->orderBy('m.created_at', 'DESC');
+
+        // On filtre les données
+        if($filters != null){
+            $query->andWhere('c.id IN(:cats)')
+                ->setParameter(':cats', array_values($filters));
+        }
+
+        $query->orderBy('m.created_at')
+            ->setFirstResult(($page * $limit) - $limit)
+            ->setMaxResults($limit)
+        ;
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * Returns number of Annonces
+     * @return void
+     */
+    public function getTotalExhibitions($filters = null, $section = null, $mots = null){
+        $query = $this->createQueryBuilder('m')
+            ->select('COUNT(m)')
+            ->leftJoin('m.categories', 'c')
+            ->orderBy('m.created_at', 'DESC');
+
+//        if($mots != null){
+//            $query->andWhere('MATCH_AGAINST(m.name, m.description) AGAINST (:mots boolean)>0')
+//                ->setParameter('mots', $mots);
+//        }
+
+        // On filtre les données
+        if($filters != null){
+            $query->andWhere('c.id IN(:cats)')
+                ->setParameter(':cats', array_values($filters));
+        }
+
+        // On filtre les sections
+        if ($section != null) {
+            $query
+                ->leftJoin('m.mediasSections', 'ms')
+                ->andWhere('ms.id = :section')
+                ->setParameter(':section', $section);
+        }
+
+        return $query->getQuery()->getSingleScalarResult();
+    }
+
 //    /**
 //     * @return Exhibitions[] Returns an array of Exhibitions objects
 //     */
