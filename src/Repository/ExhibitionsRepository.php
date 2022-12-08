@@ -45,18 +45,18 @@ class ExhibitionsRepository extends ServiceEntityRepository
      */
     public function getPaginatedExhibitions($page, $limit, $filters = null,)
     {
-        $query = $this->createQueryBuilder('m')
-            ->select('c', 'm')
-            ->leftJoin('m.categories', 'c')
-            ->orderBy('m.created_at', 'DESC');
+        $query = $this->createQueryBuilder('e')
+            ->select( 'y', 'e')
+            ->leftJoin('e.exhibitionsYears', 'y')
+            ->orderBy('e.created_at', 'DESC');
 
         // On filtre les données
         if($filters != null){
-            $query->andWhere('c.id IN(:cats)')
-                ->setParameter(':cats', array_values($filters));
+            $query->andWhere('y.id IN(:year)')
+                ->setParameter(':year', array_values($filters));
         }
 
-        $query->orderBy('m.created_at')
+        $query/*->orderBy('e.created_at')*/
             ->setFirstResult(($page * $limit) - $limit)
             ->setMaxResults($limit)
         ;
@@ -67,29 +67,16 @@ class ExhibitionsRepository extends ServiceEntityRepository
      * Returns number of Annonces
      * @return void
      */
-    public function getTotalExhibitions($filters = null, $section = null, $mots = null){
-        $query = $this->createQueryBuilder('m')
-            ->select('COUNT(m)')
-            ->leftJoin('m.categories', 'c')
-            ->orderBy('m.created_at', 'DESC');
-
-//        if($mots != null){
-//            $query->andWhere('MATCH_AGAINST(m.name, m.description) AGAINST (:mots boolean)>0')
-//                ->setParameter('mots', $mots);
-//        }
+    public function getTotalExhibitions($filters = null){
+        $query = $this->createQueryBuilder('e')
+            ->select('COUNT(e)')
+            ->leftJoin('e.exhibitionsYears', 'y')
+            ->orderBy('e.created_at', 'DESC');
 
         // On filtre les données
         if($filters != null){
-            $query->andWhere('c.id IN(:cats)')
-                ->setParameter(':cats', array_values($filters));
-        }
-
-        // On filtre les sections
-        if ($section != null) {
-            $query
-                ->leftJoin('m.mediasSections', 'ms')
-                ->andWhere('ms.id = :section')
-                ->setParameter(':section', $section);
+            $query->andWhere('y.id IN(:year)')
+                ->setParameter(':year', array_values($filters));
         }
 
         return $query->getQuery()->getSingleScalarResult();

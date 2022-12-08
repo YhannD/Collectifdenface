@@ -39,5 +39,5 @@ window.onload = () => {
     document.querySelectorAll("#filters input").forEach(input => {
         input.addEventListener("change", onChangeCat);
     });
-   document.getElementById("mots").addEventListener("input", onChangeCat);
+   // document.getElementById("mots").addEventListener("input", onChangeCat);
 }

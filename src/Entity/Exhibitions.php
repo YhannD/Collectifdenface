@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Entity\Trait\CreatedAtTrait;
-//use App\Entity\Trait\SlugTrait;
 use App\Entity\Trait\SlugTrait;
 use App\Repository\ExhibitionsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -27,11 +26,12 @@ class Exhibitions
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
-    #[ORM\Column]
-    private ?int $year = null;
-
     #[ORM\OneToMany(mappedBy: 'exhibition', targetEntity: ExhibitionsImages::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $exhibitionsImages;
+
+    #[ORM\ManyToOne(inversedBy: 'exhibitions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ExhibitionsYears $exhibitionsYears = null;
 
     public function __construct()
     {
@@ -72,17 +72,7 @@ class Exhibitions
 
         return $this;
     }
-    public function getYear(): ?int
-    {
-        return $this->year;
-    }
 
-    public function setYear(int $year): self
-    {
-        $this->year = $year;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, ExhibitionsImages>
@@ -113,4 +103,18 @@ class Exhibitions
 
         return $this;
     }
+
+    public function getExhibitionsYears(): ?ExhibitionsYears
+    {
+        return $this->exhibitionsYears;
+    }
+
+    public function setExhibitionsYears(?ExhibitionsYears $exhibitionsYears): self
+    {
+        $this->exhibitionsYears = $exhibitionsYears;
+
+        return $this;
+    }
+
+
 }

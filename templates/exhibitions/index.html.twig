@@ -1,22 +1,45 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseExhibitions.html.twig' %}
+
+{# On crée des variables personnalisées #}
+{% set queryParams = app.request.query.all %}
 
 {% block title %}Les expositions{% endblock %}
 
 {% block body %}
     <main class="container">
-        <section class="row">
+
+        <div class="col-12">
+            <p>Filtrer</p>
+            <form id="filters">
+                <div class="d-flex justify-content-evenly">
+                    {% for years in exhibitionsYear %}
+{#                         On vérifie si l'année est dans les paramètres#}
+                        {% if queryParams is not empty and queryParams.exhibitionsYears is defined %}
+                            {% set checked = (years.id in queryParams.exhibitionsYears) ? "checked" : "" %}
+                        {% else %}
+                            {% set checked = "" %}
+                        {% endif %}
+
+                        <p><input type="checkbox" name="years[]" id="cat{{ years.id }}"
+                                  value="{{ years.id }}" {{ checked }}>
+                            <label for="cat{{ years.id }}">{{ years.year }}</label></p>
+                    {% endfor %}
+                    <input type="hidden" name="page" value="{{ page }}">
+                </div>
+            </form>
+        </div>
+
+
             <div class="col-12">
                 <h1>Les expositions du Collectif d'en Face</h1>
             </div>
 
-                {% for exhibition in exhibitions %}
-                    {% include 'exhibitions/_card.html.twig' %}
-                {% endfor %}
-
-            <div class="mt-3">
-{#                {{ knp_pagination_render(exhibitions) }}#}
-                {{ knp_pagination_render(exhibitions,'_partials/twitter_bootstrap_v4_pagination.html.twig') }}
+            <div id="content" class="row">
+                {% include "exhibitions/_content.html.twig" %}
             </div>
-        </section>
+
+
+
     </main>
 {% endblock %}
+
