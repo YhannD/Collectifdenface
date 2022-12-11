@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Data\SearchData;
 use App\Entity\Medias;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -45,25 +46,25 @@ class MediasRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * Returns all Annonces per page
-     * @return void
-     */
+
     public function getPaginatedMedias($page, $limit, $filters = null, $section = null, $mots = null)
     {
         $query = $this->createQueryBuilder('m')
-            ->select('c', 'm')
-            ->leftJoin('m.categories', 'c')
+            ->select( 'm')
+            ->addSelect('c')
+            ->innerJoin('m.categories', 'c')
             ->orderBy('m.created_at', 'DESC');
 
-        if($mots != null){
-            $query->andWhere('MATCH_AGAINST(m.name, m.description) AGAINST (:mots boolean)>0')
+        if ($mots != null) {
+            $query
+                ->andWhere('MATCH_AGAINST(m.name, m.description) AGAINST (:mots boolean)>0')
                 ->setParameter('mots', $mots);
         }
 
         // On filtre les données
-        if($filters != null){
-            $query->andWhere('c.id IN(:cats)')
+        if ($filters != null) {
+            $query
+                ->andWhere('c.id IN(:cats)')
                 ->setParameter(':cats', array_values($filters));
         }
 
@@ -75,117 +76,81 @@ class MediasRepository extends ServiceEntityRepository
                 ->setParameter(':section', $section);
         }
 
-        $query->orderBy('m.created_at')
+        $query
             ->setFirstResult(($page * $limit) - $limit)
-            ->setMaxResults($limit)
-        ;
+            ->setMaxResults($limit);
+
         return $query->getQuery()->getResult();
     }
 
-    /**
-     * Returns number of Annonces
-     * @return void
-     */
-    public function getTotalMedias($filters = null, $section = null, $mots = null){
+
+    public function getTotalMedias($mots = null, $filters = null, $section = null, )
+    {
         $query = $this->createQueryBuilder('m')
             ->select('COUNT(m)')
             ->leftJoin('m.categories', 'c')
             ->orderBy('m.created_at', 'DESC');
 
-//        if($mots != null){
-//            $query->andWhere('MATCH_AGAINST(m.name, m.description) AGAINST (:mots boolean)>0')
-//                ->setParameter('mots', $mots);
-//        }
-
-        // On filtre les données
-        if($filters != null){
-            $query->andWhere('c.id IN(:cats)')
-                ->setParameter(':cats', array_values($filters));
-        }
-
-        // On filtre les sections
-        if ($section != null) {
-            $query
-                ->leftJoin('m.mediasSections', 'ms')
-                ->andWhere('ms.id = :section')
-                ->setParameter(':section', $section);
-        }
-
-        return $query->getQuery()->getSingleScalarResult();
-    }
-
-    public function search($mots = null, $categorie = null, $filters = null){
-        $query = $this->createQueryBuilder('m');
-        if($mots != null){
+        if ($mots != null) {
             $query->andWhere('MATCH_AGAINST(m.name, m.description) AGAINST (:mots boolean)>0')
                 ->setParameter('mots', $mots);
         }
-//        if($categorie != null){
-//            $query->leftJoin('m.categories', 'c');
-//            $query->andWhere('c.id = :id')
-//                ->setParameter('id', $categorie);
-//        }
+
         // On filtre les données
-        if($filters != null){
+        if ($filters != null) {
             $query->andWhere('c.id IN(:cats)')
                 ->setParameter(':cats', array_values($filters));
         }
-        return $query->getQuery()->getResult();
-    }
-//    /**
-//     * Récupère tous les medias en lien avec une recherche
-//     * @param SearchData $search
-//     * @return PaginationInterface
-//     */
-//    public function findImagesType(SearchData $search): PaginationInterface
-//    {
-//        $query = $this
-//            ->createQueryBuilder('m')
-//            ->select('c', 'm')
-//            ->andWhere('m.mediasSections = 1')
-//            ->join('m.categories', 'c');
-//
-//        if (!empty($search->categories)) {
-//            $query = $query
-//                ->andWhere('c.id IN (:categories)')
-//                ->setParameter('categories', $search->categories);
-//        }
-//
-//        $query = $query->getQuery();
-//        return $this->paginator->paginate(
-//            $query,
-//            $search->page,
-//            6
-//        );
-//    }
 
-    public function selectByCategoryAndSection(SearchData $search, $section = null): PaginationInterface
-    {
-
-        $query = $this->createQueryBuilder('m')
-            ->select('c', 'm')
-            ->leftJoin('m.categories', 'c')
-            ->orderBy('m.created_at', 'DESC');
-
+//         On filtre les sections
         if ($section != null) {
             $query
                 ->leftJoin('m.mediasSections', 'ms')
                 ->andWhere('ms.id = :section')
                 ->setParameter(':section', $section);
         }
-        if (!empty($search->categories)) {
-            $query = $query
-                ->andWhere('c.id IN (:categories)')
-                ->setParameter('categories', $search->categories);
+dump($query->getQuery());
+        return $query->getQuery()->getSingleScalarResult();
+    }
 
+    public function findMediasPaginated(int $page, $filters = null, int $limit = 6): array
+    {
+        $limit = abs($limit);
+
+        $result = [];
+
+        $query = $this->getEntityManager()->createQueryBuilder()
+            ->select('m','c' )
+            ->from('App\Entity\Medias', 'm')
+            ->leftjoin('m.categories', 'c');
+
+            if ($filters != null) {
+                $query
+                    ->andWhere('c.id IN(:cats)')
+                    ->setParameter(':cats', array_values($filters));
+            }
+          $query
+            ->setMaxResults($limit)
+            ->setFirstResult(($page * $limit) - $limit);
+
+        $paginator = new Paginator($query);
+        $data = $paginator->getQuery()->getResult();
+
+        //On vérifie qu'on a des données
+        if(empty($data)){
+            return $result;
         }
-            $query = $query->getQuery();
-            return $this->paginator->paginate(
-                $query,
-                $search->page,
-                8
-            );
 
+        //On calcule le nombre de pages
+        $pages = ceil($paginator->count() / $limit);
+
+        // On remplit le tableau
+        $result['data'] = $data;
+        $result['pages'] = $pages;
+        $result['page'] = $page;
+        $result['limit'] = $limit;
+dump($data, $limit, $filters);
+        return $result;
     }
 
 //    /**

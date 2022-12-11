@@ -13,7 +13,7 @@
             <form id="filters">
                 <div class="d-flex justify-content-evenly">
                     {% for years in exhibitionsYear %}
-{#                         On vérifie si l'année est dans les paramètres#}
+                        {# On vérifie si l'année est dans les paramètres #}
                         {% if queryParams is not empty and queryParams.exhibitionsYears is defined %}
                             {% set checked = (years.id in queryParams.exhibitionsYears) ? "checked" : "" %}
                         {% else %}
@@ -30,14 +30,13 @@
         </div>
 
 
-            <div class="col-12">
-                <h1>Les expositions du Collectif d'en Face</h1>
-            </div>
+        <div class="col-12">
+            <h1>Les expositions du Collectif d'en Face</h1>
+        </div>
 
-            <div id="content" class="row">
-                {% include "exhibitions/_content.html.twig" %}
-            </div>
-
+        <div id="content" class="row">
+            {% include "exhibitions/_content.html.twig" %}
+        </div>
 
 
     </main>

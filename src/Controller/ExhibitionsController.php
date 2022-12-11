@@ -18,7 +18,7 @@ class ExhibitionsController extends AbstractController
     public function index(ExhibitionsRepository $exhibitionsRepository, ExhibitionYearRepository $exhibitionYearRepository, Request $request): Response
     {
         // On définit le nombre d'éléments par page
-        $limit = 5;
+        $limit = 3;
 
         // On récupère le numéro de page
         $page = (int)$request->query->get("page", 1);
@@ -28,11 +28,11 @@ class ExhibitionsController extends AbstractController
 
         // On récupère les annonces de la page en fonction du filtre
         $exhibitions = $exhibitionsRepository->getPaginatedExhibitions($page, $limit, $filters,);
-//        dd($exhibitions);
+        dump($exhibitions);
 
         // On récupère le nombre total d'annonces
         $total = $exhibitionsRepository->getTotalExhibitions($filters);
-//dd($total);
+dump($total);
 
         // On vérifie si on a une requête Ajax
         if($request->get('ajax')){

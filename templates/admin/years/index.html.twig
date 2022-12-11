@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ExhibitionsYears index{% endblock %}
+
+{% block body %}
+    <h1>ExhibitionsYears index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Year</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for exhibitions_year in exhibitions_years %}
+            <tr>
+                <td>{{ exhibitions_year.id }}</td>
+                <td>{{ exhibitions_year.year }}</td>
+                <td>
+                    <a href="{{ path('app_years_show', {'id': exhibitions_year.id}) }}">show</a>
+                    <a href="{{ path('app_years_edit', {'id': exhibitions_year.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_years_new') }}">Create new</a>
+{% endblock %}

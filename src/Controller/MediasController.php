@@ -2,10 +2,7 @@
 
 namespace App\Controller;
 
-use App\Data\SearchData;
-use App\Form\SearchForm;
 use App\Entity\Medias;
-use App\Form\SearchMediaType;
 use App\Repository\CategoriesRepository;
 use App\Repository\MediasRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,83 +14,73 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('medias')]
 class MediasController extends AbstractController
 {
-//    #[Route('/medias', name: 'app_medias')]
-//    public function index(): Response
-//    {
-//        return $this->render('medias/index.html.twig', [
-//            'controller_name' => 'MediasController',
-//        ]);
-//    }
     #[Route('/', name: 'app_medias_categories')]
-//    public function indexCategories(MediasRepository $mediasRepository, Request $request, SearchData $data): Response
-//    {
-//        $data->page = (int)$request->get('page',1);
-//        $form = $this->createForm(SearchForm::class, $data);
-//        $form->handleRequest($request);
-//        $medias = $mediasRepository->selectByCategoryAndSection($data);
-//        return $this->render('medias/index.html.twig', [
-//            'medias' => $medias,
-//            'form' =>$form->createView()
-//        ]);
-//    }
-    public function index(MediasRepository $mediasRepository, CategoriesRepository $categoriesRepository, Request $request/*, CacheInterface $cache*/): JsonResponse|Response
+    public function index( MediasRepository $mediasRepository, CategoriesRepository $categoriesRepository, Request $request/*, CacheInterface $cache*/): Response
     {
 
-        // On définit le nombre d'éléments par page
+//        // On définit le nombre d'éléments par page
         $limit = 10;
-
-        // On récupère le numéro de page
+//
+//        // On récupère le numéro de page
         $page = (int)$request->query->get("page", 1);
 
-        // On récupère les filtres
+        //On va chercher le numéro de page dans l'url
+//        $page = $request->query->getInt('page', 1);
+//
+//        // On récupère les filtres
         $filters = $request->get("categories");
-
+//
         $mots = $request->query->get("mots");
-
-        // On récupère les annonces de la page en fonction du filtre
-        $medias = $mediasRepository->getPaginatedMedias($page, $limit, $filters, null, $mots);
-        dump($medias);
-//dd($medias);
-        // On récupère le nombre total d'annonces
-        $total = $mediasRepository->getTotalMedias($filters);
-
+//
+//        // On récupère les annonces de la page en fonction du filtre
+        $medias = $mediasRepository->getPaginatedMedias($page, $limit, $filters, null, $mots );
+dump($medias);
+//
+//        // On récupère le nombre total d'annonces
+        $total = $mediasRepository->getTotalMedias($mots,$filters, null);
+        dump($total,$mots, $filters);
         $categories = $categoriesRepository->findAll();
 
-        // On vérifie si on a une requête Ajax
+        //On va chercher la liste des produits de la catégorie
+//        $medias = $mediasRepository->findProductsPaginated(1, $filters, 19);
+
+
+//            $data = $medias['data'];
+
+//        dump($medias,$data);
+
+//        // On vérifie si on a une requête Ajax
         if($request->get('ajax')){
             return new JsonResponse([
-                'content' => $this->renderView('medias/_content.html.twig', [
-                    'total' => $total,
-                    'limit' => $limit,
-                    'page' => $page,
-                    'categories' => $categories,
-                    'medias' => $medias,
-            ])]);
+                'content' => $this->renderView(
+                    'medias/_content.html.twig',
+                    [
+                        'medias' => $medias,
+                         'total' => $total,
+                         'limit' => $limit,
+                        'page' => $page,
+                        'categories' => $categories,
+//                        'data' => $data,
+                    ]
+                )]);
         }
 
+//        return $this->render('medias/index.html.twig', compact('medias', /*'total', 'limit',*/ 'page', 'categories', $data));
+        return $this->render(
+            'medias/index.html.twig',
+            [
+                'medias' => $medias,
+                 'total' => $total,
+                 'limit' => $limit,
+                'page' => $page,
+                'categories' => $categories,
+//                'data' => $data,
+            ]
+        );
 
-//        return $this->render('medias/index.html.twig', compact('medias', 'total', 'limit', 'page', 'categories'));
-        return $this->render('medias/index.html.twig', [
-            'total' => $total,
-            'limit' => $limit,
-            'page' => $page,
-            'categories' => $categories,
-            'medias' => $medias,
-        ]);
     }
 
     #[Route('/images', name: 'app_medias_images')]
-//    public function indexImages(MediasRepository $mediasRepository, Request $request, SearchData $data): Response
-//    {
-//        $data->page = $request->get('page',1);
-//        $form = $this->createForm(SearchForm::class, $data);
-//        $form->handleRequest($request);
-//        $medias = $mediasRepository->selectByCategoryAndSection($data, 1);
-//        return $this->render('medias/index.html.twig', [
-//            'medias' => $medias,
-//            'form' =>$form->createView()
-//        ]);
-//    }
     public function indexImages(MediasRepository $mediasRepository, CategoriesRepository $categoriesRepository, Request $request/*, CacheInterface $cache*/): JsonResponse|Response
     {
         // On définit le nombre d'éléments par page
@@ -109,10 +96,10 @@ class MediasController extends AbstractController
 
         // On récupère les annonces de la page en fonction du filtre
         $medias = $mediasRepository->getPaginatedMedias($page, $limit, $filters, 1, $mots);
-//dd($medias);
+dd($medias);
         // On récupère le nombre total d'annonces
-        $total = $mediasRepository->getTotalMedias($filters, 1);
-//dd($total);
+        $total = $mediasRepository->getTotalMedias($mots,$filters ,1);
+dump($total);
 
         $categories = $categoriesRepository->findAll();
 

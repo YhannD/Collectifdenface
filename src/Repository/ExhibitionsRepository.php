@@ -39,10 +39,7 @@ class ExhibitionsRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * Returns all Annonces per page
-     * @return void
-     */
+
     public function getPaginatedExhibitions($page, $limit, $filters = null,)
     {
         $query = $this->createQueryBuilder('e')
@@ -56,17 +53,12 @@ class ExhibitionsRepository extends ServiceEntityRepository
                 ->setParameter(':year', array_values($filters));
         }
 
-        $query/*->orderBy('e.created_at')*/
-            ->setFirstResult(($page * $limit) - $limit)
-            ->setMaxResults($limit)
-        ;
+        $query->setFirstResult(($page * $limit) - $limit)
+            ->setMaxResults($limit);
+
         return $query->getQuery()->getResult();
     }
 
-    /**
-     * Returns number of Annonces
-     * @return void
-     */
     public function getTotalExhibitions($filters = null){
         $query = $this->createQueryBuilder('e')
             ->select('COUNT(e)')

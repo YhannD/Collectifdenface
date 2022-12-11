@@ -26,7 +26,7 @@ class ExhibitionsType extends AbstractType
             ->add('exhibitionsImages', FileType::class,[
                 'multiple'=> true,
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'label' => 'Images'
             ])
             ->add('exhibitionsYears', EntityType::class, [
