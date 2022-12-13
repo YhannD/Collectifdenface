@@ -36,12 +36,12 @@
 <ul class="pagination">
     <li class="{{ (page == 1) ? 'disabled' : '' }}">
         <a href="?page=1&{{ queryString }}">
-            {#            <i class="fas fa-step-backward"></i> #}
+                        <i class="fas fa-step-backward"></i>
         </a>
     </li>
     <li class="{{ (page == 1) ? 'disabled' : '' }}">
         <a href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}&{{ queryString }}">
-            {#            <i class="fas fa-angle-left"></i> #}
+                        <i class="fas fa-angle-left"></i>
         </a>
     </li>
     {% set pages = (total / limit)|round(0, 'ceil') %}
@@ -52,12 +52,12 @@
     {% endfor %}
     <li class="{{ (page == pages) ? 'disabled' : '' }}">
         <a href="{{ (page < pages) ? '?page=' ~ (page + 1) : '' }}&{{ queryString }}">
-            {#            <i class="fas fa-angle-right"></i> #}
+                        <i class="fas fa-angle-right"></i>
         </a>
     </li>
     <li class="{{ (page == pages) ? 'disabled' : '' }}">
         <a href="?page={{ pages }}&{{ queryString }}">
-            {#            <i class="fas fa-step-forward"></i> #}
+                        <i class="fas fa-step-forward"></i>
         </a>
     </li>
 

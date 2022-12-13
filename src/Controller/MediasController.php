@@ -22,10 +22,10 @@ class MediasController extends AbstractController
         $limit = 10;
 //
 //        // On récupère le numéro de page
-        $page = (int)$request->query->get("page", 1);
+//        $page = (int)$request->query->get("page", 1);
 
         //On va chercher le numéro de page dans l'url
-//        $page = $request->query->getInt('page', 1);
+        $page = $request->query->getInt('page', 1);
 //
 //        // On récupère les filtres
         $filters = $request->get("categories");
@@ -33,9 +33,9 @@ class MediasController extends AbstractController
         $mots = $request->query->get("mots");
 //
 //        // On récupère les annonces de la page en fonction du filtre
-        $medias = $mediasRepository->getPaginatedMedias($page, $limit, $filters, null, $mots );
+        $medias = $mediasRepository->getPaginatedMedias($page, $limit, $filters,$mots );
 dump($medias);
-//
+
 //        // On récupère le nombre total d'annonces
         $total = $mediasRepository->getTotalMedias($mots,$filters, null);
         dump($total,$mots, $filters);

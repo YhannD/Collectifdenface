@@ -17,6 +17,7 @@ export class FiltersForm {
         // Get a reference to the "clear" button and add an event listener
         const clearButton = document.getElementById("clearText");
         clearButton.addEventListener('click', () => this.clearInput('mots'));
+
     }
 
     // Add a clearInput method to clear the value of the input to the formId
