@@ -18,7 +18,7 @@ class ExhibitionsController extends AbstractController
     public function index(ExhibitionsRepository $exhibitionsRepository, ExhibitionYearRepository $exhibitionYearRepository, Request $request): Response
     {
         // On définit le nombre d'éléments par page
-        $limit = 3;
+        $limit = 8;
 
         // On récupère le numéro de page
         $page = (int)$request->query->get("page", 1);

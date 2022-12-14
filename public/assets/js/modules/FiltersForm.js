@@ -20,7 +20,7 @@ export class FiltersForm {
 
     }
 
-    // Add a clearInput method to clear the value of the input to the formId
+                // Add a clearInput method to clear the value of the input to the formId
     clearInput(inputId) {
         // Get a reference to the input element
         const input = document.getElementById(inputId);

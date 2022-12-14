@@ -4,7 +4,7 @@ export class FiltersFormWithPagination extends FiltersForm {
         super(formId);
 
         // Get the pagination links
-        const paginationLinks = document.querySelectorAll('.pagination');
+        const paginationLinks = document.querySelectorAll('.pagination a');
 
         // Add a click event listener to each pagination link
         paginationLinks.forEach(link => {
@@ -29,4 +29,5 @@ export class FiltersFormWithPagination extends FiltersForm {
             });
         });
     }
+    
 }
