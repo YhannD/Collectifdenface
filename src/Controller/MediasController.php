@@ -19,7 +19,7 @@ class MediasController extends AbstractController
     {
 
 //        // On définit le nombre d'éléments par page
-        $limit = 10;
+        $limit = 3;
 //
 //        // On récupère le numéro de page
 //        $page = (int)$request->query->get("page", 1);
@@ -33,7 +33,7 @@ class MediasController extends AbstractController
         $mots = $request->query->get("mots");
 //
 //        // On récupère les annonces de la page en fonction du filtre
-        $medias = $mediasRepository->getPaginatedMedias($page, $limit, $filters,$mots );
+        $medias = $mediasRepository->getPaginatedMedias($page, $limit, $filters, $mots );
 dump($medias);
 
 //        // On récupère le nombre total d'annonces

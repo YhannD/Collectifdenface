@@ -32,16 +32,18 @@ export class FiltersForm {
     }
 
     async onChange() {
-        const Form = new FormData(this.formElement);
-        const Params = new URLSearchParams();
-        Form.forEach((value, key) => {
-            Params.append(key, value);
+        const form = new FormData(this.formElement);
+        const params = new URLSearchParams();
+        form.forEach((value, key) => {
+            params.append(key, value);
         });
+        params.delete('page')
+
 
         const Url = new URL(window.location.href);
 
         try {
-            const fetchUrl = this.buildFetchUrl(Url.pathname, Params);
+            const fetchUrl = this.buildFetchUrl(Url.pathname, params, ["page"]);
             const response = await fetch(fetchUrl, {
                 headers: {
                     "X-Requested-With": "XMLHttpRequest"
@@ -55,7 +57,10 @@ export class FiltersForm {
         }
     }
 
-    buildFetchUrl(pathname, params) {
+    buildFetchUrl(pathname, params, paramsToRemove) {
+        paramsToRemove.forEach((param) => {
+            params.delete(param);
+        });
         return `${pathname}?${params.toString()}&ajax=1`;
     }
 

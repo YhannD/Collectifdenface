@@ -6,13 +6,12 @@
 {% block title %}Liste des productions{% endblock %}
 {% block body %}
     <div class="container">
-        <i class="fa-thin fa-house"></i>
 
         <div class="col-12">
             <p>Filtrer</p>
             <form id="filters">
                 <div class="d-flex justify-content-evenly">
-                    <label for="mots">Rechercher:</label>
+                    <label for="mots"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></label>
                     <input type="text" id="mots" name="mots" >
                     <button id="clearText" type="button">Effacer le texte</button>
                     {% for categorie in categories %}
