@@ -19,7 +19,7 @@ class MediasController extends AbstractController
     {
 
         // This variable defines the number of elements per page
-        $limit = 8;
+        $limit = 14;
 
         // This variable holds the current page number
         $page = (int)$request->query->get("page", 1);
@@ -49,14 +49,23 @@ class MediasController extends AbstractController
         // Render the "medias/index.html.twig" template, passing in the
         // following variables to be used in the template
         return $this->render(
-            'medias/index.html.twig', compact('medias', 'total', 'limit', 'page', 'categories'));
+            'medias/index.html.twig',
+            [
+                'medias' => $medias,
+                'total' => $total,
+                'limit' => $limit,
+                'page' => $page,
+                'categories' => $categories
+            ]
+        );
+
     }
 
     #[Route('/images', name: 'app_medias_images')]
     public function indexImages(MediasRepository $mediasRepository, CategoriesRepository $categoriesRepository, Request $request/*, CacheInterface $cache*/): JsonResponse|Response
     {
         // This variable defines the number of elements per page
-        $limit = 8;
+        $limit = 14;
 
         // This variable holds the current page number
         $page = (int)$request->query->get("page", 1);
@@ -92,7 +101,7 @@ class MediasController extends AbstractController
     #[Route('/musics', name: 'app_medias_musics')]
     public function indexMusics(MediasRepository $mediasRepository, CategoriesRepository $categoriesRepository, Request $request/*, CacheInterface $cache*/): JsonResponse|Response
     {
-        $limit = 8;
+        $limit = 14;
 
         // This variable holds the current page number
         $page = (int)$request->query->get("page", 1);
@@ -129,7 +138,7 @@ class MediasController extends AbstractController
     public function indexVideos(MediasRepository $mediasRepository, CategoriesRepository $categoriesRepository, Request $request/*, CacheInterface $cache*/): JsonResponse|Response
     {
         // This variable defines the number of elements per page
-        $limit = 8;
+        $limit = 14;
 
         // This variable holds the current page number
         $page = (int)$request->query->get("page", 1);
@@ -166,7 +175,7 @@ class MediasController extends AbstractController
     public function indexEditions(MediasRepository $mediasRepository, CategoriesRepository $categoriesRepository, Request $request/*, CacheInterface $cache*/): JsonResponse|Response
     {
         // This variable defines the number of elements per page
-        $limit = 8;
+        $limit = 14;
 
         // This variable holds the current page number
         $page = (int)$request->query->get("page", 1);

@@ -8,12 +8,16 @@
     <div class="container">
 
         <div class="col-12">
-            <p>Filtrer</p>
             <form id="filters">
-                <div class="d-flex justify-content-evenly">
-                    <label for="mots"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></label>
-                    <input type="text" id="mots" name="mots" >
-                    <button id="clearText" type="button">Effacer le texte</button>
+                <div class="d-flex justify-content-evenly m-3">
+
+                    <div class="searchbar">
+                        <div class="search">
+                    <input type="text" id="mots" name="mots" placeholder="Recherche">
+                        </div>
+                        <button class="filterBtn reset" id="clearText" type="button" ><i class="fa-sharp fa-solid fa-rotate fa-lg"></i></button>
+                    </div>
+                    <div class="vl"></div>
                     {% for categorie in categories %}
                         {# On vérifie si la catégorie est dans les paramètres #}
                         {% if queryParams is not empty and queryParams.categories is defined %}
@@ -21,16 +25,17 @@
                         {% else %}
                             {% set checked = "" %}
                         {% endif %}
-
-                        <p><input type="checkbox" name="categories[]" id="cat{{ categorie.id }}"
+                    <div class="filterBtn button-group">
+                        <input type="checkbox" name="categories[]" id="cat{{ categorie.id }}"
                                   value="{{ categorie.id }}" {{ checked }}>
-                            <label for="cat{{ categorie.id }}">{{ categorie.name }}</label></p>
+                            <label class="btnName" for="cat{{ categorie.id }}">{{ categorie.name }}</label>
+                    </div>
                     {% endfor %}
                     <input type="hidden" name="page" value="{{ page }}">
                 </div>
             </form>
-
         </div>
+
 
         <div id="content" class="row">
             {% include "medias/_content.html.twig" %}
