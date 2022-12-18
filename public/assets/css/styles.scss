@@ -1,66 +1,78 @@
+@import "variables";
 body {
-  margin: 1px;
-  font-family: "Manjari", sans-serif;
+  margin: 0px;
+  font-family: $primary-font;
 }
 
 h1, h2, h3, h4, h5 {
-  font-family: "Shrikhand", sans-serif;
+  font-family: $secondary-font;
 }
 /*** SEARCH BAR AND CHECKBOX DISPLAY*****************************************************************/
-.searchbar .search {
-  display: inline-block;
-  border: 0 solid grey;
-  padding: 0;
-  transition: all 0.15s ease;
+.activator{
+  @include button-style-filters;
 }
-.searchbar input[type=text] {
-  font-size: 14px;
-  border: 1px solid #888;
-  border-radius: 5px;
-  padding: 5px;
-  width: 15em;
-  margin: 10px 2px 0 0;
+.Filters-box{
+  //display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin:1rem;
+  transition: all 3s ease;
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  h5 {
+    margin: 1em 0 0 0;
+  }
+  &-search{
+    margin-right: 2em;
+    &-searchBar {
+      display: inline-block;
+      border: 0 solid grey;
+      padding: 0;
+      transition: all 0.15s ease;
+      input[type=text] {
+        font-size: 14px;
+        border: 1px solid #888;
+        border-radius: 5px;
+        padding: 5px;
+        width: 10.5em;
+        margin: 10px 2px 0 0;
+      }
+      &-searchClear{
+        display: inline-block;
+        &-reset{
+          padding: 5px;
+          @include button-style-filters;
+        }
+        &-reset:hover {
+          background-color: #888;
+          color: white;
+        }
+      }
+    }
+  }
+  &-cats{
+    &-btn {
+      @include button-style-filters;
+      input{
+        display: none;
+      }
+      input:checked + label,
+      input:checked + label:active {
+        background-color: #888;
+        color: white;
+      }
+      &-name{
+        padding: 5px;
+        cursor: pointer;
+      }
+    }
+    &-btn:hover {
+      background-color: #888;
+      color: white;
+    }
+  }
 }
-.filterBtn {
-  background-color: #FFF;
-  color: #888;
-  text-align: center;
-  display: inline-block;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  border: 1px solid #888;
-  border-radius: 5px;
-  margin: 10px 2px 0 0;
-
-}
-.reset{
-  padding: 5px;
-}
-.btnName{
-  padding: 5px;
-}
-.filterBtn:hover {
-   background-color: #888;
-   color: white;
- }
-.vl {
-  border-left: 1px solid lightgrey;
-  height: 30px;
-  margin: auto 20px;
-}
-
-.button-group input{
-  display: none;
-}
-
-.button-group input:checked + label,
-.button-group input:checked + label:active {
-  background-color: #888;
-  color: white;
-}
-
 
 /*** HEXAGON DISPLAY *****************************************************************/
 #hexGrid {
@@ -171,8 +183,6 @@ h1, h2, h3, h4, h5 {
   background-size: cover;
   overflow: hidden;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  border-right:2px solid black;
-  border-left:2px solid black;
   }
 
 .img:before, .img:after {

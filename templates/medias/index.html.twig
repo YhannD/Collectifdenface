@@ -3,50 +3,84 @@
 {# On crée des variables personnalisées #}
 {% set queryParams = app.request.query.all %}
 
-{% block title %}Liste des productions{% endblock %}
+{% block title %}Liste des réalisations{% endblock %}
 {% block body %}
     <div class="container">
-
         <div class="col-12">
+            <button class="activator" id="activator">
+                <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
+            </button>
             <form id="filters">
-                <div class="d-flex justify-content-evenly m-3">
-
-                    <div class="searchbar">
-                        <div class="search">
-                    <input type="text" id="mots" name="mots" placeholder="Recherche">
+                <div class="Filters-box">
+                    <div class="Filters-box-search">
+                        <h5 class="Filters-box-search-tilte">RECHERCHE</h5>
+                        <div class="Filters-box-search-searchBar">
+                            <div class="Filters-box-search-searchBar-searchClear">
+                                <input type="text" id="mots" name="mots" placeholder="Tapez votre texte ici">
+                            </div>
+                            <button class="Filters-box-search-searchBar-searchClear-reset" id="clearText" type="button"><i
+                                        class="fa-sharp fa-solid fa-rotate fa-lg"></i></button>
                         </div>
-                        <button class="filterBtn reset" id="clearText" type="button" ><i class="fa-sharp fa-solid fa-rotate fa-lg"></i></button>
                     </div>
-                    <div class="vl"></div>
-                    {% for categorie in categories %}
-                        {# On vérifie si la catégorie est dans les paramètres #}
-                        {% if queryParams is not empty and queryParams.categories is defined %}
-                            {% set checked = (categorie.id in queryParams.categories) ? "checked" : "" %}
-                        {% else %}
-                            {% set checked = "" %}
-                        {% endif %}
-                    <div class="filterBtn button-group">
-                        <input type="checkbox" name="categories[]" id="cat{{ categorie.id }}"
-                                  value="{{ categorie.id }}" {{ checked }}>
-                            <label class="btnName" for="cat{{ categorie.id }}">{{ categorie.name }}</label>
+
+                    <div class="Filters-box-cats">
+                        <h5 class="Filters-box-cats-title">CATEGORIES</h5>
+                        {% for categorie in categories %}
+                            {# On vérifie si la catégorie est dans les paramètres #}
+                            {% if queryParams is not empty and queryParams.categories is defined %}
+                                {% set checked = (categorie.id in queryParams.categories) ? "checked" : "" %}
+                            {% else %}
+                                {% set checked = "" %}
+                            {% endif %}
+                            <div class="Filters-box-cats-btn">
+                                <input type="checkbox" name="categories[]" id="cat{{ categorie.id }}"
+                                       value="{{ categorie.id }}" {{ checked }}>
+                                <label class="Filters-box-cats-btn-name" for="cat{{ categorie.id }}">{{ categorie.name }}</label>
+                            </div>
+                        {% endfor %}
+
+                        <input type="hidden" name="page" value="{{ page }}">
                     </div>
-                    {% endfor %}
-                    <input type="hidden" name="page" value="{{ page }}">
                 </div>
             </form>
         </div>
-
-
-        <div id="content" class="row">
-            {% include "medias/_content.html.twig" %}
-        </div>
-
     </div>
+
+    <script>
+        var activator = document.getElementById('activator');
+        var toggle = false;
+
+        function toggleForm() {
+            toggle = !toggle;
+            var filtersBox = document.querySelector('.Filters-box');
+            if (toggle) {
+                filtersBox.style.height = 'auto';
+                filtersBox.style.opacity = 1;
+                setTimeout(function() {
+                    filtersBox.style.display = 'flex';
+                }, 300);
+            } else {
+                filtersBox.style.height = 0;
+                filtersBox.style.opacity = 0;
+                setTimeout(function() {
+                    filtersBox.style.display = 'none';
+                }, 300);
+            }
+        }
+
+        activator.addEventListener('click', toggleForm);
+    </script>
+
+    <div id="content" class="row">
+        {% include "medias/_content.html.twig" %}
+    </div>
+
+
 {% endblock %}
 
-{#{% block javascripts %}#}
-{#    <script src="{{ asset('assets/js/filters.js') }}"></script>#}
-{#{% endblock %}#}
+{# {% block javascripts %} #}
+{#    <script src="{{ asset('assets/js/filters.js') }}"></script> #}
+{# {% endblock %} #}
 
 
 {# {% extends 'base.html.twig' %}

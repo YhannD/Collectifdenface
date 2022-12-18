@@ -1,0 +1,16 @@
+$primary-font: "Manjari", sans-serif;
+$secondary-font: "Shrikhand", sans-serif;
+
+@mixin button-style-filters {
+  background-color: #FFF;
+  color: #888;
+  text-align: center;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid #888;
+  border-radius: 5px;
+  margin: 10px 2px 0 0;
+}
