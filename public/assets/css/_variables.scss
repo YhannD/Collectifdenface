@@ -1,6 +1,10 @@
 $primary-font: "Manjari", sans-serif;
 $secondary-font: "Shrikhand", sans-serif;
 
+$primary-color: #2a2a2a;
+$midnight: #2c3e50;
+$clouds: #ecf0f1;
+
 @mixin button-style-filters {
   background-color: #FFF;
   color: #888;

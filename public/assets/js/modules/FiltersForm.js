@@ -12,15 +12,35 @@ export class FiltersForm {
 
         document.getElementById("mots").addEventListener("input", () => this.onChange());
 
-        window.addEventListener("beforeunload", () => this.resetValues());
+        // window.addEventListener("beforeunload", () => this.resetValues());
 
         // Get a reference to the "clear" button and add an event listener
         const clearButton = document.getElementById("clearText");
         clearButton.addEventListener('click', () => this.clearInput('mots'));
+        // Get a reference to the "reset" button and add an event listener
+        const resetButton = document.getElementById("reset-filters");
+        resetButton.addEventListener("click", async event => {
+            // Prevent the default action (page reload)
+            event.preventDefault();
 
+            // Get the form element using the data-form-id attribute
+            const formId = resetButton.dataset.formId;
+            const formElement = document.getElementById(formId);
+
+            // Get all checkbox inputs within the form element
+            const checkboxes = formElement.querySelectorAll('input[type="checkbox"]');
+
+            // Loop through the checkboxes and set their checked property to false
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            // Call the onChange method and await the result
+            await this.onChange();
+        });
     }
 
-                // Add a clearInput method to clear the value of the input to the formId
+    // Add a clearInput method to clear the value of the input to the formId
     clearInput(inputId) {
         // Get a reference to the input element
         const input = document.getElementById(inputId);
@@ -72,183 +92,3 @@ export class FiltersForm {
         });
     }
 }
-
-// export class FiltersForm {
-//     constructor(formId) {
-//         this.formElement = document.querySelector(`#${formId}`);
-//         this.inputElements = document.querySelectorAll(`#${formId} input`);
-//
-//         this.defaultValues = {};
-//
-//         this.inputElements.forEach(input => {
-//             this.defaultValues[input.name] = input.value;
-//             input.addEventListener("change", () => this.onChange());
-//         });
-//
-//         document.getElementById("mots").addEventListener("input", () => this.onChange());
-//
-//         window.addEventListener("beforeunload", () => this.resetValues());
-//     }
-//
-//     async onChange() {
-//         const Form = new FormData(this.formElement);
-//         const Params = new URLSearchParams();
-//         Form.forEach((value, key) => {
-//             Params.append(key, value);
-//         });
-//
-//         const Url = new URL(window.location.href);
-//
-//         try {
-//             const fetchUrl = this.buildFetchUrl(Url.pathname, Params);
-//             const response = await fetch(fetchUrl, {
-//                 headers: {
-//                     "X-Requested-With": "XMLHttpRequest"
-//                 }
-//             });
-//             const data = await response.json();
-//             const content = document.querySelector("#content");
-//             content.innerHTML = data.content;
-//         } catch (e) {
-//             alert(e);
-//         }
-//     }
-//
-//     buildFetchUrl(pathname, params) {
-//         return `${pathname}?${params.toString()}&ajax=1`;
-//     }
-//
-//     resetValues() {
-//         this.inputElements.forEach(input => {
-//             input.value = this.defaultValues[input.name];
-//         });
-//     }
-// }
-
-// export class FiltersForm {
-//     constructor(formId) {
-//         this.formElement = document.querySelector(`#${formId}`);
-//         this.inputElements = document.querySelectorAll(`#${formId} input`);
-//
-//         this.inputElements.forEach(input => {
-//             input.addEventListener("change", () => this.onChange());
-//         });
-//
-//         document.getElementById("mots").addEventListener("input", () => this.onChange());
-//     }
-//
-//     async onChange() {
-//         const Form = new FormData(this.formElement);
-//         const Params = new URLSearchParams();
-//         Form.forEach((value, key) => {
-//             Params.append(key, value);
-//         });
-//
-//         const Url = new URL(window.location.href);
-//
-//         try {
-//             const fetchUrl = this.buildFetchUrl(Url.pathname, Params);
-//             const response = await fetch(fetchUrl, {
-//                 headers: {
-//                     "X-Requested-With": "XMLHttpRequest"
-//                 }
-//             });
-//             const data = await response.json();
-//             const content = document.querySelector("#content");
-//             content.innerHTML = data.content;
-//             history.pushState({}, null, fetchUrl);
-//         } catch (e) {
-//             alert(e);
-//         }
-//     }
-//
-//     buildFetchUrl(pathname, params) {
-//         return `${pathname}?${params.toString()}&ajax=1`;
-//     }
-//
-// }
-// export class FormHandler {
-//     constructor(formId, inputId) {
-//         this.form = document.querySelector(formId);
-//         this.input = document.querySelector(inputId);
-//         this.input.addEventListener("input", () => this.onChange());
-//         this.input.addEventListener("change", () => this.onChange());
-//     }
-//
-//     async onChange() {
-//         const Form = new FormData(this.form);
-//         const Params = new URLSearchParams();
-//         Form.forEach((value, key) => {
-//             Params.append(key, value);
-//         });
-//
-//         const Url = new URL(window.location.href);
-//
-//         try {
-//             const fetchUrl = this.buildFetchUrl(Url.pathname, Params);
-//             const response = await fetch(fetchUrl, {
-//                 headers: {
-//                     "X-Requested-With": "XMLHttpRequest"
-//                 }
-//             });
-//             const data = await response.json();
-//             const content = document.querySelector("#content");
-//             content.innerHTML = data.content;
-//             history.pushState({}, null, fetchUrl);
-//         } catch (e) {
-//             alert(e);
-//         }
-//     }
-//
-//     buildFetchUrl(pathname, params) {
-//         return `${pathname}?${params.toString()}&ajax=1`;
-//     }
-// }
-
-// const formHandler = new FormHandler("#filters", "#mots");
-
-// export class FiltersForm {
-//     constructor(formId) {
-//         this.formElement = document.querySelector(`#${formId}`);
-//         this.inputElements = document.querySelectorAll(`#${formId} input`);
-//
-//         this.inputElements.forEach(input => {
-//             input.addEventListener("change", () => this.onChange());
-//         });
-//
-//         document.getElementById("mots").addEventListener("input", () => this.onChange());
-//         window.addEventListener("beforeunload", () => this.resetForm());
-//     }
-//
-//     async onChange() {
-//         const Form = new FormData(this.formElement);
-//         const Params = new URLSearchParams();
-//         Form.forEach((value, key) => {
-//             Params.append(key, value);
-//         });
-//
-//         const Url = new URL(window.location.href);
-//
-//         try {
-//             const fetchUrl = this.buildFetchUrl(Url.pathname, Params);
-//             const response = await fetch(fetchUrl, {
-//                 headers: {
-//                     "X-Requested-With": "XMLHttpRequest"
-//                 }
-//             });
-//             const data = await response.json();
-//             const content = document.querySelector("#content");
-//             content.innerHTML = data.content;
-//             history.pushState({}, null, fetchUrl);
-//         } catch (e) {
-//             alert(e);
-//         }
-//     }
-//     buildFetchUrl(pathname, params) {
-//         return `${pathname}?${params.toString()}&ajax=1`;
-//     }
-// }
-
-
-
-
